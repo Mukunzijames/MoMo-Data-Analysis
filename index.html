@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoMo Data Analytics Dashboard</title>
+    <link rel="stylesheet" href="frontend/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="frontend/images/logo.png" alt="MoMo Logo">
+                    <h2>MoMo</h2>
+                </div>
+                <button class="menu-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#incoming-money">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Incoming Money</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#payments-code">
+                            <i class="fas fa-code"></i>
+                            <span>Payments to Code Holders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#transfers-mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Transfers to Mobile Numbers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#bank-deposits">
+                            <i class="fas fa-university"></i>
+                            <span>Bank Deposits</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#airtime-payments">
+                            <i class="fas fa-phone"></i>
+                            <span>Airtime Bill Payments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#power-payments">
+                            <i class="fas fa-bolt"></i>
+                            <span>Cash Power Bill Payments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#third-party">
+                            <i class="fas fa-handshake"></i>
+                            <span>Third Party Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#withdrawals">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Withdrawals from Agents</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#bank-transfers">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Bank Transfers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#internet-bundles">
+                            <i class="fas fa-wifi"></i>
+                            <span>Internet & Voice Bundles</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search transactions...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="user-profile">
+                        <img src="frontend/images/user-avatar.png" alt="User Profile">
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="stats-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Total Transactions</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="counter" id="totalTransactions">0</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Total Amount</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2><span>RWF</span> <span class="counter" id="totalAmount">0</span></h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Average Transaction</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2><span>RWF</span> <span class="counter" id="avgTransaction">0</span></h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Total Types</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="counter" id="totalTypes">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Transaction Analysis</h3>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="transactionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                        <button class="btn btn-outline">View All</button>
+                    </div>
+                    <div class="transactions-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Transaction data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="frontend/js/dashboard.js"></script>
+</body>
+</html> 
