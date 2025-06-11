@@ -1,16 +1,27 @@
 {
   "version": 2,
-  "outputDirectory": "dist",
   "builds": [
     {
-      "src": "package.json",
+      "src": "src/index.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "src/index.ts"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/$1"
     }
   ]
 } 
