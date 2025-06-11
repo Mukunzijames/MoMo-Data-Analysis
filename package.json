@@ -1,0 +1,38 @@
+{
+  "name": "momo-data-analysis",
+  "version": "1.0.0",
+  "description": "A fullstack application to process SMS data from MTN MoMo service, clean and categorize the data, store it in a relational database, and build a frontend interface to analyze and visualize the data.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mukunzijames/MoMo-Data-Analysis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mukunzijames/MoMo-Data-Analysis/issues"
+  },
+  "homepage": "https://github.com/Mukunzijames/MoMo-Data-Analysis#readme",
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "@neondatabase/serverless": "^1.0.1",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.2",
+    "hono": "^4.7.11"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "drizzle-kit": "^0.31.1",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.3"
+  }
+}
