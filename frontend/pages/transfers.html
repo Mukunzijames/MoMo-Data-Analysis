@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MTN MoMo - Transfers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>MTN MoMo Dashboard</h1>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="incoming.html">Incoming Money</a>
+      <a href="payments.html">Payments</a>
+      <a href="deposits.html">Bank Deposits</a>
+      <a href="transfers.html" class="active">Transfers</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <!-- Quick Transfer Actions -->
+    <div class="quick-actions">
+      <h2>Quick Transfer Options</h2>
+      <div class="action-buttons">
+        <button class="action-btn send-money">
+          <div class="btn-icon">💸</div>
+          <div class="btn-text">Send Money</div>
+        </button>
+        <button class="action-btn request-money">
+          <div class="btn-icon">💰</div>
+          <div class="btn-text">Request Money</div>
+        </button>
+        <button class="action-btn international">
+          <div class="btn-icon">🌍</div>
+          <div class="btn-text">International</div>
+        </button>
+        <button class="action-btn scheduled">
+          <div class="btn-icon">⏰</div>
+          <div class="btn-text">Schedule Transfer</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Transfer Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Sent Today</h3>
+        <div class="amount outgoing">-285,000 RWF</div>
+        <div class="count">8 transfers</div>
+      </div>
+      <div class="stat-card">
+        <h3>Received Today</h3>
+        <div class="amount incoming">+165,000 RWF</div>
+        <div class="count">5 transfers</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Month Sent</h3>
+        <div class="amount outgoing">-4,250,000 RWF</div>
+        <div class="count">89 transfers</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending Transfers</h3>
+        <div class="amount pending">-45,000 RWF</div>
+        <div class="count">2 pending</div>
+      </div>
+    </div>
+
+    <!-- Favorite Contacts -->
+    <div class="favorites-section">
+      <h2>Favorite Contacts</h2>
+      <div class="favorites-grid">
+        <div class="contact-card">
+          <div class="contact-avatar">👤</div>
+          <div class="contact-info">
+            <h4>Jean Baptiste</h4>
+            <div class="contact-number">+250788123456</div>
+            <div class="last-transfer">Last: 25,000 RWF</div>
+          </div>
+          <button class="quick-send-btn">Send</button>
+        </div>
+        <div class="contact-card">
+          <div class="contact-avatar">👩</div>
+          <div class="contact-info">
+            <h4>Marie Claire</h4>
+            <div class="contact-number">+250788987654</div>
+            <div class="last-transfer">Last: 15,000 RWF</div>
+          </div>
+          <button class="quick-send-btn">Send</button>
+        </div>
+        <div class="contact-card">
+          <div class="contact-avatar">👨</div>
+          <div class="contact-info">
+            <h4>Paul Uwimana</h4>
+            <div class="contact-number">+250788555666</div>
+            <div class="last-transfer">Last: 50,000 RWF</div>
+          </div>
+          <button class="quick-send-btn">Send</button>
+        </div>
+        <div class="contact-card">
+          <div class="contact-avatar">👩</div>
+          <div class="contact-info">
+            <h4>Grace Uwase</h4>
+            <div class="contact-number">+250788777888</div>
+            <div class="last-transfer">Last: 30,000 RWF</div>
+          </div>
+          <button class="quick-send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transfer History Table -->
+    <div class="table-section">
+      <h2>Transfer History</h2>
+      <div class="filter-tabs">
+        <button class="tab-btn active">All Transfers</button>
+        <button class="tab-btn">Sent</button>
+        <button class="tab-btn">Received</button>
+        <button class="tab-btn">International</button>
+      </div>
+      <div class="table-container">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Transaction ID</th>
+              <th>Type</th>
+              <th>Contact</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-06-11 17:45</td>
+              <td>TRF001234</td>
+              <td>Sent</td>
+              <td>+250788123456</td>
+              <td>Lunch money for Jean</td>
+              <td>-15,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>150 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 16:20</td>
+              <td>TRF001235</td>
+              <td>Received</td>
+              <td>+250788987654</td>
+              <td>Birthday gift from Marie</td>
+              <td>+50,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 14:30</td>
+              <td>TRF001236</td>
+              <td>Sent</td>
+              <td>+250788555666</td>
+              <td>Rent payment to Paul</td>
+              <td>-120,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>1,200 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 12:15</td>
+              <td>TRF001237</td>
+              <td>Received</td>
+              <td>+250788777888</td>
+              <td>Loan repayment from Grace</td>
+              <td>+85,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 10:45</td>
+              <td>TRF001238</td>
+              <td>Sent</td>
+              <td>+250788111222</td>
+              <td>Business payment</td>
+              <td>-75,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>750 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 09:30</td>
+              <td>TRF001239</td>
+              <td>International</td>
+              <td>+254712345678</td>
+              <td>Transfer to Kenya - Family</td>
+              <td>-45,000 RWF</td>
+              <td><span class="status-pending">Pending</span></td>
+              <td>2,250 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 19:20</td>
+              <td>TRF001240</td>
+              <td>Received</td>
+              <td>+250788333444</td>
+              <td>Freelance project payment</td>
+              <td>+180,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 17:15</td>
+              <td>TRF001241</td>
+              <td>Sent</td>
+              <td>+250788999000</td>
+              <td>Emergency support</td>
+              <td>-35,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>350 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 15:45</td>
+              <td>TRF001242</td>
+              <td>Scheduled</td>
+              <td>+250788123456</td>
+              <td>Monthly allowance - Jean</td>
+              <td>-40,000 RWF</td>
+              <td><span class="status-pending">Scheduled</span></td>
+              <td>400 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 13:30</td>
+              <td>TRF001243</td>
+              <td>Received</td>
+              <td>+256701234567</td>
+              <td>International - Uganda Business</td>
+              <td>+95,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 20:15</td>
+              <td>TRF001244</td>
+              <td>Sent</td>
+              <td>+250788666777</td>
+              <td>Group dinner split</td>
+              <td>-18,500 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>185 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 16:45</td>
+              <td>TRF001245</td>
+              <td>Received</td>
+              <td>+250788444555</td>
+              <td>Payment for services</td>
+              <td>+65,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Transfer Limits -->
+    <!-- <div class="limits-section">
+      <h2>Transfer Limits & Fees</h2>
+      <div class="limits-info">
+        <div class="limit-card">
+          <h4>Daily Transfer Limit</h4>
+          <div class="limit-amount">2,000,000 RWF</div>
+          <div class="limit-used">Used Today: 285,000 RWF</div>
+          <div class="limit-bar">
+            <div class="limit-progress" style="width: 14.25%"></div>
+          </div>
+        </div>
+        <div class="fee-card">
+          <h4>Transfer Fees</h4>
+          <div class="fee-structure">
+            <div class="fee-row">
+              <span>Local (1 - 50,000): </span>
+              <span>1%</span>
+            </div>
+            <div class="fee-row">
+              <span>Local (50,001+): </span>
+              <span>0.5%</span>
+            </div>
+            <div class="fee-row">
+              <span>International: </span>
+              <span>5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <style>
+    .quick-actions {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .quick-actions h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .action-btn {
+      background-color: #111;
+      border: 2px solid #ffcc00;
+      border-radius: 8px;
+      padding: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background-color: #ffcc00;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-text {
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card h3 {
+      color: #ffcc00;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .stat-card .amount.outgoing {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff3333;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .amount.incoming {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00cc66;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .amount.pending {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff9900;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .count {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .favorites-section {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .favorites-section h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-card {
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid #333;
+      transition: border-color 0.3s ease;
+    }
+
+    .contact-card:hover {
+      border-color: #ffcc00;
+    }
+
+    .contact-avatar {
+      font-size: 2.5rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffcc00;
+      border-radius: 50%;
+    }
+
+    .contact-info {
+      flex-grow: 1;
+    }
+
+    .contact-info h4 {
+      color: #ffcc00;
+      margin: 0 0 0.3rem 0;
+      font-size: 1rem;
+    }
+
+    .contact-number {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .last-transfer {
+      color: #00cc66;
+      font-size: 0.8rem;
+    }
+
+    .quick-send-btn {
+      background-color:#ffcc00;
+      color: #000;
+    }

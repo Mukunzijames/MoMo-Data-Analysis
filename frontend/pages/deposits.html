@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MTN MoMo - Bank Deposits</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>MTN MoMo Dashboard</h1>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="incoming.html">Incoming Money</a>
+      <a href="payments.html">Payments</a>
+      <a href="deposits.html" class="active">Bank Deposits</a>
+      <a href="transfers.html">Transfers</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <!-- Quick Deposit Actions -->
+    <div class="quick-actions">
+      <h2>Quick Deposit Actions</h2>
+      <div class="action-buttons">
+        <button class="action-btn deposit-in">
+          <div class="btn-icon">💰</div>
+          <div class="btn-text">Cash Deposit</div>
+        </button>
+        <button class="action-btn bank-transfer">
+          <div class="btn-icon">🏦</div>
+          <div class="btn-text">Bank Transfer</div>
+        </button>
+        <button class="action-btn withdraw">
+          <div class="btn-icon">💸</div>
+          <div class="btn-text">Withdraw to Bank</div>
+        </button>
+        <button class="action-btn agent">
+          <div class="btn-icon">👤</div>
+          <div class="btn-text">Agent Deposit</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Deposit Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Deposits Today</h3>
+        <div class="amount incoming">+235,000 RWF</div>
+        <div class="count">5 deposits</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Week</h3>
+        <div class="amount incoming">+1,850,000 RWF</div>
+        <div class="count">28 deposits</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Month</h3>
+        <div class="amount incoming">+6,420,000 RWF</div>
+        <div class="count">89 deposits</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending Deposits</h3>
+        <div class="amount pending">+125,000 RWF</div>
+        <div class="count">3 pending</div>
+      </div>
+    </div>
+
+    <!-- Connected Banks -->
+    <div class="banks-section">
+      <h2>Connected Bank Accounts</h2>
+      <div class="bank-cards">
+        <div class="bank-card active">
+          <div class="bank-logo">🏦</div>
+          <div class="bank-info">
+            <h4>Bank of Kigali</h4>
+            <div class="account-number">****1234</div>
+            <div class="bank-status">Active</div>
+          </div>
+          <div class="bank-balance">1,250,000 RWF</div>
+        </div>
+        <div class="bank-card active">
+          <div class="bank-logo">🏛️</div>
+          <div class="bank-info">
+            <h4>Equity Bank</h4>
+            <div class="account-number">****5678</div>
+            <div class="bank-status">Active</div>
+          </div>
+          <div class="bank-balance">850,000 RWF</div>
+        </div>
+        <div class="bank-card">
+          <div class="bank-logo">🏢</div>
+          <div class="bank-info">
+            <h4>Cogebanque</h4>
+            <div class="account-number">****9012</div>
+            <div class="bank-status">Inactive</div>
+          </div>
+          <div class="bank-balance">--</div>
+        </div>
+        <div class="bank-card active">
+          <div class="bank-logo">💼</div>
+          <div class="bank-info">
+            <h4>I&M Bank</h4>
+            <div class="account-number">****3456</div>
+            <div class="bank-status">Active</div>
+          </div>
+          <div class="bank-balance">2,100,000 RWF</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Deposits Table -->
+    <div class="table-section">
+      <h2>Recent Bank Deposits & Withdrawals</h2>
+      <div class="table-container">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Transaction ID</th>
+              <th>Type</th>
+              <th>Bank/Source</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Fee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-06-11 16:30</td>
+              <td>DEP001234</td>
+              <td>Cash Deposit</td>
+              <td>Agent KG001</td>
+              <td>Cash Deposit via Agent</td>
+              <td>+85,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>1,000 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 14:15</td>
+              <td>DEP001235</td>
+              <td>Bank Transfer In</td>
+              <td>Bank of Kigali</td>
+              <td>Transfer from Savings Account</td>
+              <td>+150,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>500 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 11:45</td>
+              <td>WTH001236</td>
+              <td>Withdraw to Bank</td>
+              <td>Equity Bank</td>
+              <td>Transfer to Current Account</td>
+              <td>-75,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>750 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 17:20</td>
+              <td>DEP001237</td>
+              <td>International Deposit</td>
+              <td>Western Union</td>
+              <td>International Money Transfer</td>
+              <td>+125,000 RWF</td>
+              <td><span class="status-pending">Pending</span></td>
+              <td>2,500 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 15:30</td>
+              <td>DEP001238</td>
+              <td>Cash Deposit</td>
+              <td>Agent RP002</td>
+              <td>Cash Deposit via Agent</td>
+              <td>+50,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>750 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 12:15</td>
+              <td>WTH001239</td>
+              <td>Withdraw to Bank</td>
+              <td>I&M Bank</td>
+              <td>Emergency Withdrawal</td>
+              <td>-200,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>2,000 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 18:45</td>
+              <td>DEP001240</td>
+              <td>Bank Transfer In</td>
+              <td>Cogebanque</td>
+              <td>Salary Direct Deposit</td>
+              <td>+320,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>0 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 16:20</td>
+              <td>DEP001241</td>
+              <td>Cash Deposit</td>
+              <td>Agent NY003</td>
+              <td>Business Revenue Deposit</td>
+              <td>+180,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>2,250 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 13:30</td>
+              <td>WTH001242</td>
+              <td>Withdraw to Bank</td>
+              <td>Bank of Kigali</td>
+              <td>Monthly Savings Transfer</td>
+              <td>-100,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>1,000 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-08 19:15</td>
+              <td>DEP001243</td>
+              <td>International Deposit</td>
+              <td>MoneyGram</td>
+              <td>Family Remittance</td>
+              <td>+95,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>1,900 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-08 14:45</td>
+              <td>DEP001244</td>
+              <td>Cash Deposit</td>
+              <td>Agent GT004</td>
+              <td>Emergency Cash Deposit</td>
+              <td>+65,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>975 RWF</td>
+            </tr>
+            <tr>
+              <td>2025-06-08 10:30</td>
+              <td>WTH001245</td>
+              <td>Withdraw to Bank</td>
+              <td>Equity Bank</td>
+              <td>Bill Payment Preparation</td>
+              <td>-45,000 RWF</td>
+              <td><span class="status-failed">Failed</span></td>
+              <td>0 RWF</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Deposit Limits Info -->
+    <div class="limits-section">
+      <h2>Deposit & Withdrawal Limits</h2>
+      <div class="limits-cards">
+        <div class="limit-card">
+          <h4>Daily Cash Deposit</h4>
+          <div class="limit-amount">2,000,000 RWF</div>
+          <div class="limit-used">Used: 235,000 RWF</div>
+          <div class="limit-bar">
+            <div class="limit-progress" style="width: 11.75%"></div>
+          </div>
+        </div>
+        <div class="limit-card">
+          <h4>Daily Bank Withdrawal</h4>
+          <div class="limit-amount">1,500,000 RWF</div>
+          <div class="limit-used">Used: 375,000 RWF</div>
+          <div class="limit-bar">
+            <div class="limit-progress" style="width: 25%"></div>
+          </div>
+        </div>
+        <div class="limit-card">
+          <h4>Monthly Transactions</h4>
+          <div class="limit-amount">50,000,000 RWF</div>
+          <div class="limit-used">Used: 12,840,000 RWF</div>
+          <div class="limit-bar">
+            <div class="limit-progress" style="width: 25.68%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .quick-actions {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .quick-actions h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .action-btn {
+      background-color: #111;
+      border: 2px solid #ffcc00;
+      border-radius: 8px;
+      padding: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background-color: #ffcc00;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-text {
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card h3 {
+      color: #ffcc00;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .stat-card .amount.incoming {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00cc66;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .amount.pending {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff9900;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .count {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .banks-section {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .banks-section h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .bank-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .bank-card {
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 2px solid #333;
+      opacity: 0.6;
+    }
+
+    .bank-card.active {
+      border-color: #00cc66;
+      opacity: 1;
+    }
+
+    .bank-logo {
+      font-size: 2rem;
+    }
+
+    .bank-info {
+      flex-grow: 1;
+    }
+
+    .bank-info h4 {
+      color: #ffcc00;
+      margin: 0 0 0.3rem 0;
+      font-size: 1rem;
+    }
+
+    .account-number {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .bank-status {
+      font-size: 0.8rem;
+      color: #00cc66;
+    }
+
+    .bank-card:not(.active) .bank-status {
+      color: #ff6666;
+    }
+
+    .bank-balance {
+      font-weight: bold;
+      color: white;
+      text-align: right;
+    }
+
+    .limits-section {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+
+    .limits-section h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .limits-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .limit-card {
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 4px solid #ffcc00;
+    }
+
+    .limit-card h4 {
+      color: #ffcc00;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .limit-amount {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 0.3rem;
+    }
+
+    .limit-used {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .limit-bar {
+      background-color: #333;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .limit-progress {
+      background-color: #ffcc00;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a.active {
+      background-color: #000;
+      color: #ffcc00;
+      border: 2px solid #ffcc00;
+    }
+  </style>
+</body>
+</html>

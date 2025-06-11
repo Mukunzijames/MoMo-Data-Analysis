@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MTN MoMo Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>MTN MoMo Dashboard</h1>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="incoming.html">Incoming Money</a>
+      <a href="payments.html">Payments</a>
+      <a href="deposits.html">Bank Deposits</a>
+      <a href="transfers.html">Transfers</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <div class="dashboard-grid">
+      <div class="card">
+        <h2>Transaction Volume by Type</h2>
+        <div class="chart-container">
+          <canvas id="typeVolumeChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>Monthly Transaction Trends</h2>
+        <div class="chart-container">
+          <canvas id="monthlyTrendChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>Payment vs Deposit Distribution</h2>
+        <div class="chart-container">
+          <canvas id="paymentDepositPie"></canvas>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>Average Amount by Type</h2>
+        <div class="chart-container">
+          <canvas id="averageAmountChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Single Transaction Table -->
+    <div class="table-section">
+      <h2>Recent Deposits & Incoming Transactions</h2>
+      <div class="table-container">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Transaction ID</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-06-11</td>
+              <td>TXN001234</td>
+              <td>Deposit</td>
+              <td>Bank Transfer - Incoming</td>
+              <td>+85,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>BK Bank</td>
+            </tr>
+            <tr>
+              <td>2025-06-11</td>
+              <td>TXN001235</td>
+              <td>Incoming</td>
+              <td>Mobile Money Received</td>
+              <td>+25,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>+250788123456</td>
+            </tr>
+            <tr>
+              <td>2025-06-10</td>
+              <td>TXN001236</td>
+              <td>Deposit</td>
+              <td>Cash Deposit - Agent</td>
+              <td>+150,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>Agent KG001</td>
+            </tr>
+            <tr>
+              <td>2025-06-10</td>
+              <td>TXN001237</td>
+              <td>Incoming</td>
+              <td>Salary Payment</td>
+              <td>+320,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>Company Ltd</td>
+            </tr>
+            <tr>
+              <td>2025-06-09</td>
+              <td>TXN001238</td>
+              <td>Deposit</td>
+              <td>International Transfer</td>
+              <td>+75,000 RWF</td>
+              <td><span class="status-pending">Pending</span></td>
+              <td>Western Union</td>
+            </tr>
+            <tr>
+              <td>2025-06-09</td>
+              <td>TXN001239</td>
+              <td>Incoming</td>
+              <td>Refund - Utility Bill</td>
+              <td>+12,500 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>EUCL</td>
+            </tr>
+            <tr>
+              <td>2025-06-08</td>
+              <td>TXN001240</td>
+              <td>Deposit</td>
+              <td>Mobile Money Deposit</td>
+              <td>+50,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>+250788987654</td>
+            </tr>
+            <tr>
+              <td>2025-06-08</td>
+              <td>TXN001241</td>
+              <td>Incoming</td>
+              <td>Business Payment</td>
+              <td>+180,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>Customer Pay</td>
+            </tr>
+            <tr>
+              <td>2025-06-07</td>
+              <td>TXN001242</td>
+              <td>Deposit</td>
+              <td>Bank Transfer - Incoming</td>
+              <td>+95,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>Equity Bank</td>
+            </tr>
+            <tr>
+              <td>2025-06-07</td>
+              <td>TXN001243</td>
+              <td>Incoming</td>
+              <td>Gift Money Received</td>
+              <td>+30,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>+250788111222</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="charts.js"></script>
+</body>
+</html>

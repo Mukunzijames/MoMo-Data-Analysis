@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MTN MoMo - Incoming Money</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>MTN MoMo Dashboard</h1>
+    <nav class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="incoming.html" class="active">Incoming Money</a>
+      <a href="payments.html">Payments</a>
+      <a href="deposits.html">Bank Deposits</a>
+      <a href="transfers.html">Transfers</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <!-- Stats Summary -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Incoming Today</h3>
+        <div class="amount">+425,000 RWF</div>
+        <div class="count">8 transactions</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Week</h3>
+        <div class="amount">+2,180,000 RWF</div>
+        <div class="count">45 transactions</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Month</h3>
+        <div class="amount">+8,750,000 RWF</div>
+        <div class="count">156 transactions</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending</h3>
+        <div class="amount pending">+75,000 RWF</div>
+        <div class="count">2 transactions</div>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <h2>Filter Incoming Money</h2>
+      <div class="filter-controls">
+        <select class="filter-select">
+          <option value="all">All Sources</option>
+          <option value="mobile">Mobile Money</option>
+          <option value="salary">Salary Payments</option>
+          <option value="business">Business Payments</option>
+          <option value="refunds">Refunds</option>
+          <option value="gifts">Gift Money</option>
+        </select>
+        <select class="filter-select">
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="custom">Custom Range</option>
+        </select>
+        <button class="filter-btn">Apply Filter</button>
+      </div>
+    </div>
+
+    <!-- Incoming Money Table -->
+    <div class="table-section">
+      <h2>All Incoming Money Transactions</h2>
+      <div class="table-container">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Transaction ID</th>
+              <th>Source</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-06-11 14:32</td>
+              <td>IN001234</td>
+              <td>+250788123456</td>
+              <td>Mobile Money Received</td>
+              <td>+25,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>REF123456</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 09:15</td>
+              <td>IN001235</td>
+              <td>Company Ltd</td>
+              <td>Salary Payment - June 2025</td>
+              <td>+320,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>SAL-062025</td>
+            </tr>
+            <tr>
+              <td>2025-06-11 08:45</td>
+              <td>IN001236</td>
+              <td>Customer Pay</td>
+              <td>Business Payment - Invoice #001</td>
+              <td>+80,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>INV001</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 16:20</td>
+              <td>IN001237</td>
+              <td>EUCL</td>
+              <td>Utility Bill Refund</td>
+              <td>+12,500 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>EUCL-REF-001</td>
+            </tr>
+            <tr>
+              <td>2025-06-10 11:30</td>
+              <td>IN001238</td>
+              <td>+250788987654</td>
+              <td>Gift Money from Family</td>
+              <td>+50,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>GIFT001</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 19:45</td>
+              <td>IN001239</td>
+              <td>Freelance Client</td>
+              <td>Project Payment - Web Design</td>
+              <td>+150,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>PROJ-WEB-001</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 14:12</td>
+              <td>IN001240</td>
+              <td>Western Union</td>
+              <td>International Transfer</td>
+              <td>+75,000 RWF</td>
+              <td><span class="status-pending">Pending</span></td>
+              <td>WU-INT-002</td>
+            </tr>
+            <tr>
+              <td>2025-06-09 10:30</td>
+              <td>IN001241</td>
+              <td>+250788111222</td>
+              <td>Payment Split - Restaurant Bill</td>
+              <td>+8,500 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>SPLIT001</td>
+            </tr>
+            <tr>
+              <td>2025-06-08 17:15</td>
+              <td>IN001242</td>
+              <td>Online Store</td>
+              <td>Product Return Refund</td>
+              <td>+35,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>RET-REF-003</td>
+            </tr>
+            <tr>
+              <td>2025-06-08 13:20</td>
+              <td>IN001243</td>
+              <td>Rental Income</td>
+              <td>Monthly Rent Payment</td>
+              <td>+200,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>RENT-JUN-001</td>
+            </tr>
+            <tr>
+              <td>2025-06-07 20:45</td>
+              <td>IN001244</td>
+              <td>Cashback Reward</td>
+              <td>Shopping Cashback</td>
+              <td>+3,200 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>CB-SHOP-001</td>
+            </tr>
+            <tr>
+              <td>2025-06-07 15:30</td>
+              <td>IN001245</td>
+              <td>+250788333444</td>
+              <td>Loan Repayment Received</td>
+              <td>+45,000 RWF</td>
+              <td><span class="status-success">Completed</span></td>
+              <td>LOAN-REP-001</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card h3 {
+      color: #ffcc00;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .stat-card .amount {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00cc66;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .amount.pending {
+      color: #ff9900;
+    }
+
+    .stat-card .count {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .filter-section {
+      background-color: #000;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .filter-section h2 {
+      color: #ffcc00;
+      margin: 0 0 1rem 0;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ffcc00;
+      background-color: #111;
+      color: white;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      background-color: #ffcc00;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .filter-btn:hover {
+      background-color: #e6b800;
+    }
+
+    .nav-links a.active {
+      background-color: #000;
+      color: #ffcc00;
+      border: 2px solid #ffcc00;
+    }
+  </style>
+</body>
+</html>
