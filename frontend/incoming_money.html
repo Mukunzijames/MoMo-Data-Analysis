@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Received - MoMo Financial Dashboard</title>
+  <link rel="stylesheet" href="incoming_money.css">
+  <!-- Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar remains the same -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="frontend/images/logo.png" alt="MoMo Logo">
+          <h2>MoMo</h2>
+        </div>
+        <button class="menu-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="index.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+          <li class="active"><a href="incoming_money.html"><i class="fas fa-arrow-down text-green"></i> <span>Money Received</span></a></li>
+          <li><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <div class="header-content">
+          <div class="header-text">
+            <h1><i class="fas fa-arrow-down text-green"></i> Money Received</h1>
+            <p class="header-subtitle">Track all incoming payments</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" onclick="location.href='index.html'">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Summary Cards - Will be populated by JavaScript -->
+      <section class="summary-cards">
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-coins text-green"></i>
+          </div>
+          <div class="card-content">
+            <h3 id="totalReceived">Loading...</h3>
+            <p>Total Received</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-chart-line text-blue"></i>
+          </div>
+          <div class="card-content">
+            <h3 id="transactionCount">Loading...</h3>
+            <p>Transactions</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-calendar text-orange"></i>
+          </div>
+          <div class="card-content">
+            <h3 id="thisMonth">Loading...</h3>
+            <p>This Month</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Transactions List -->
+      <section class="transactions-list">
+        <div class="section-header">
+          <h2>Recent Transactions</h2>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search transactions..." onkeyup="searchTransactions()">
+          </div>
+        </div>
+        
+        <div class="transactions-container">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th>Sender</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTableBody">
+              <!-- Transactions will be loaded here by JavaScript -->
+              <tr>
+                <td colspan="5" class="loading-row">Loading transactions...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Transaction Details Modal -->
+  <div id="transactionModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalType">Transaction Details</h2>
+      
+      <div class="modal-details">
+        <div class="modal-row">
+          <span class="modal-label">Amount:</span>
+          <span id="modalAmount" class="modal-value">0 RWF</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">From:</span>
+          <span id="modalRecipient" class="modal-value">Unknown</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Date:</span>
+          <span id="modalDate" class="modal-value">Unknown</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Transaction ID:</span>
+          <span id="modalTxId" class="modal-value">N/A</span>
+        </div>
+      </div>
+      
+      <div class="modal-message">
+        <h3>Message:</h3>
+        <div id="modalSmsMessage" class="message-content"></div>
+        <button class="btn btn-secondary" onclick="copySmsMessage()">
+          <i class="fas fa-copy"></i> Copy Message
+        </button>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="downloadReceipt()">
+          <i class="fas fa-download"></i> Download Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/frontend/js/incoming-money.js"></script>
+  <script>
+    // This script will be called after incoming-money.js loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load transactions when the page loads
+      loadTransactions();
+      
+      // Set up event listeners
+      document.getElementById('exportBtn').addEventListener('click', exportData);
+    });
+    
+    function searchTransactions() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('#transactionsTableBody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(input) ? '' : 'none';
+      });
+    }
+    
+    function showTransactionDetails(sender, amount, date, txId, message) {
+      document.getElementById('modalRecipient').textContent = sender;
+      document.getElementById('modalAmount').textContent = amount;
+      document.getElementById('modalDate').textContent = date;
+      document.getElementById('modalTxId').textContent = txId;
+      document.getElementById('modalSmsMessage').textContent = message;
+      
+      document.getElementById('transactionModal').style.display = 'block';
+    }
+    
+    function closeModal() {
+      document.getElementById('transactionModal').style.display = 'none';
+    }
+    
+    function copySmsMessage() {
+      const message = document.getElementById('modalSmsMessage').textContent;
+      navigator.clipboard.writeText(message).then(() => {
+        alert('Message copied to clipboard!');
+      });
+    }
+    
+    function downloadReceipt() {
+      // This would be implemented in incoming-money.js
+      alert('Receipt download functionality would be implemented here');
+    }
+    
+    function exportData() {
+      // This would be implemented in incoming-money.js
+      alert('Export functionality would be implemented here');
+    }
+    
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      const modal = document.getElementById('transactionModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

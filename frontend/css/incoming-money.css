@@ -1,0 +1,548 @@
+:root {
+  --primary-color: #8a2be2;
+  --secondary-color: #6c1d9c;
+  --green: #28a745;
+  --blue: #007bff;
+  --orange: #fd7e14;
+  --gray: #6c757d;
+  --light-gray: #f8f9fa;
+  --dark-gray: #343a40;
+  --white: #ffffff;
+  --danger: #dc3545;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  line-height: 1.6;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar Styles - Improved spacing */
+.sidebar {
+  width: 280px; /* Increased width */
+  background-color: var(--white);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  position: relative;
+  z-index: 100;
+  padding-bottom: 20px; /* Added padding at bottom */
+}
+
+.sidebar-header {
+  padding: 25px 20px; /* Increased padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px; /* Added margin */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Added gap between logo and text */
+}
+
+.logo img {
+  width: 35px; /* Slightly larger */
+  height: 35px;
+}
+
+.logo h2 {
+  font-size: 1.3rem; /* Slightly larger */
+  color: var(--primary-color);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.3rem; /* Slightly larger */
+  cursor: pointer;
+  color: var(--gray);
+  display: none;
+  padding: 5px; /* Added padding for better click area */
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 10px 0; /* Adjusted padding */
+}
+
+.sidebar-nav li {
+  margin: 8px 15px; /* Added margin around each item */
+}
+
+.sidebar-nav li a {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--gray);
+  text-decoration: none;
+  transition: all 0.3s;
+  border-radius: 6px; /* Added rounded corners */
+}
+
+.sidebar-nav li a:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-color);
+  margin: 0 -5px; /* Expand hover area */
+  padding: 12px 25px; /* Adjust padding on hover */
+}
+
+.sidebar-nav li a i {
+  margin-right: 12px; /* Increased spacing */
+  width: 22px; /* Slightly wider */
+  text-align: center;
+  font-size: 1.1rem; /* Slightly larger icons */
+}
+
+.sidebar-nav li.active a {
+  color: var(--primary-color);
+  background-color: rgba(138, 43, 226, 0.1);
+  border-left: 4px solid var(--primary-color); /* Thicker border */
+  padding-left: 16px; /* Adjust for thicker border */
+}
+
+/* Main Content Styles - Improved spacing */
+.main-content {
+  flex: 1;
+  padding: 30px; /* Increased padding */
+  background-color: var(--light-gray);
+}
+
+.header {
+  background-color: var(--white);
+  padding: 25px; /* Increased padding */
+  border-radius: 10px; /* Larger radius */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  margin-bottom: 30px; /* Increased margin */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px; /* Added gap between items */
+}
+
+.header-text h1 {
+  font-size: 1.6rem; /* Slightly larger */
+  color: var(--dark-gray);
+  margin-bottom: 8px; /* Adjusted spacing */
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Added gap between icon and text */
+}
+
+.header-text h1 i {
+  font-size: 1.4rem; /* Larger icon */
+}
+
+.header-subtitle {
+  color: var(--gray);
+  font-size: 0.95rem; /* Slightly larger */
+  line-height: 1.5;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px; /* Increased gap between buttons */
+  margin-top: 15px; /* Increased margin */
+}
+
+/* Button styles with better spacing */
+.btn {
+  padding: 10px 18px; /* Increased padding */
+  border-radius: 6px; /* Larger radius */
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s;
+  border: none;
+  gap: 8px; /* Added gap between icon and text */
+  font-size: 0.95rem; /* Slightly larger */
+}
+
+.btn i {
+  font-size: 1.1rem; /* Larger icons */
+}
+
+/* Summary Cards - Better spacing */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Wider cards */
+  gap: 25px; /* Increased gap */
+  margin-bottom: 30px; /* Increased margin */
+}
+
+.card {
+  background-color: var(--white);
+  border-radius: 10px; /* Larger radius */
+  padding: 25px; /* Increased padding */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Added gap between icon and content */
+}
+
+.card-icon {
+  width: 60px; /* Larger icon container */
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(40, 167, 69, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.card-icon i {
+  font-size: 1.5rem; /* Larger icons */
+}
+
+.card-content h3 {
+  font-size: 1.5rem; /* Larger text */
+  color: var(--dark-gray);
+  margin-bottom: 8px; /* Adjusted spacing */
+}
+
+.card-content p {
+  color: var(--gray);
+  font-size: 0.95rem; /* Slightly larger */
+  line-height: 1.5;
+}
+
+/* Transactions List - Better spacing */
+.transactions-list {
+  background-color: var(--white);
+  border-radius: 10px; /* Larger radius */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  padding: 25px; /* Increased padding */
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px; /* Increased margin */
+  flex-wrap: wrap;
+  gap: 15px; /* Added gap between items */
+}
+
+.section-header h2 {
+  font-size: 1.4rem; /* Slightly larger */
+  color: var(--dark-gray);
+}
+
+.search-box {
+  position: relative;
+  margin-top: 0; /* Removed top margin since we have gap */
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px; /* Adjusted position */
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray);
+  font-size: 1.1rem; /* Larger icon */
+}
+
+.search-box input {
+  padding: 10px 15px 10px 40px; /* Increased padding */
+  border-radius: 6px; /* Larger radius */
+  border: 1px solid #ddd;
+  width: 280px; /* Wider input */
+  transition: all 0.3s;
+  font-size: 0.95rem; /* Slightly larger */
+}
+
+/* Table styles with better spacing */
+.transaction-table {
+  width: 100%;
+  border-collapse: separate; /* Changed to separate for better spacing */
+  border-spacing: 0 12px; /* Added vertical spacing between rows */
+}
+
+.transaction-table thead tr {
+  box-shadow: none;
+}
+
+.transaction-table th {
+  background-color: var(--light-gray);
+  color: var(--gray);
+  font-weight: 500;
+  text-align: left;
+  padding: 15px; /* Increased padding */
+  font-size: 0.9rem; /* Slightly larger */
+  text-transform: uppercase;
+  letter-spacing: 0.5px; /* Better readability */
+}
+
+.transaction-table td {
+  padding: 18px 15px; /* Increased padding */
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  background-color: var(--white);
+}
+
+.transaction-table tr {
+  transition: all 0.2s;
+  border-radius: 8px; /* Rounded corners for rows */
+  overflow: hidden;
+}
+
+.transaction-table tr:hover {
+  background-color: rgba(138, 43, 226, 0.05);
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Shadow on hover */
+}
+
+/* Transaction items with better spacing */
+.transaction-sender {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Added gap between avatar and info */
+}
+
+.transaction-sender-avatar {
+  width: 42px; /* Slightly larger */
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.1rem; /* Larger initial */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.transaction-sender-info h4 {
+  font-size: 1rem; /* Slightly larger */
+  margin-bottom: 5px; /* Adjusted spacing */
+}
+
+.transaction-sender-info p {
+  font-size: 0.85rem; /* Slightly larger */
+  color: var(--gray);
+  line-height: 1.4;
+}
+
+.transaction-date {
+  color: var(--gray);
+  font-size: 0.9rem; /* Slightly larger */
+}
+
+.transaction-status {
+  display: inline-block;
+  padding: 6px 10px; /* Increased padding */
+  border-radius: 6px; /* Larger radius */
+  font-size: 0.8rem; /* Slightly larger */
+  font-weight: 500;
+}
+
+.transaction-actions {
+  display: flex;
+  gap: 10px; /* Added gap between buttons */
+}
+
+.transaction-actions button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1.1rem; /* Larger icons */
+  padding: 5px; /* Better click area */
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.transaction-actions button:hover {
+  background-color: rgba(138, 43, 226, 0.1);
+}
+
+/* Modal Styles - Better spacing */
+.modal-content {
+  padding: 30px; /* Increased padding */
+  border-radius: 12px; /* Larger radius */
+  width: 90%;
+  max-width: 550px; /* Slightly wider */
+}
+
+.modal-details {
+  margin: 25px 0; /* Increased margin */
+}
+
+.modal-row {
+  margin-bottom: 18px; /* Increased spacing */
+  padding-bottom: 18px;
+}
+
+.modal-label {
+  font-size: 0.95rem; /* Slightly larger */
+}
+
+.modal-value {
+  font-size: 1rem; /* Slightly larger */
+}
+
+.modal-message {
+  margin: 30px 0; /* Increased margin */
+}
+
+.message-content {
+  padding: 18px; /* Increased padding */
+  font-size: 0.95rem; /* Slightly larger */
+  line-height: 1.6;
+}
+
+.modal-footer {
+  gap: 15px; /* Added gap between buttons */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 80px; /* Slightly wider */
+  }
+  
+  .sidebar-header {
+    padding: 20px 15px;
+    justify-content: center;
+  }
+  
+  .logo h2,
+  .sidebar-nav li span {
+    display: none;
+  }
+  
+  .sidebar-nav li a {
+    justify-content: center;
+    padding: 15px 0; /* Adjusted padding */
+  }
+  
+  .sidebar-nav li a i {
+    margin-right: 0;
+    font-size: 1.3rem; /* Larger icons */
+  }
+  
+  .sidebar-nav li.active a {
+    border-left: none;
+    border-radius: 50%; /* Circular active state */
+    width: 50px;
+    height: 50px;
+    margin: 0 auto; /* Center the active state */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .sidebar-header {
+    padding: 15px;
+    justify-content: space-between;
+  }
+  
+  .menu-toggle {
+    display: block;
+  }
+  
+  .sidebar-nav {
+    display: none;
+  }
+  
+  .sidebar-nav.show {
+    display: block;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    align-items: stretch; /* Full width items */
+    gap: 15px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: space-between; /* Better mobile layout */
+    margin-top: 15px;
+  }
+  
+  .btn {
+    flex: 1; /* Equal width buttons */
+    justify-content: center;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+  
+  .transaction-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .transaction-sender-avatar {
+    display: none;
+  }
+  
+  .transaction-actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 20px 15px; /* Adjusted padding */
+  }
+  
+  .header {
+    padding: 20px 15px;
+  }
+  
+  .card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .card-icon {
+    margin-right: 0;
+  }
+  
+  .modal-content {
+    padding: 20px 15px;
+    margin: 20% auto;
+  }
+}
