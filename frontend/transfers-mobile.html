@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Money Transfer</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/frontend/css/transfers-mobile.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="nav-link" href="/index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="transfer-container">
+        <h1><i class="fas fa-mobile-alt"></i> Mobile Transfer </h1>
+        <form id="transferForm">
+            <div class="form-group">
+                <label for="recipientName"><i class="fas fa-user"></i> Recipient Name</label>
+                <input type="text" id="recipientName" required placeholder="Full name of the person receiving funds">
+            </div>
+            
+            <div class="form-group">
+                <label for="mobileNumber"><i class="fas fa-phone"></i> Mobile Number</label>
+                <input type="tel" id="mobileNumber" required placeholder="Phone number money is sent to">
+            </div>
+            
+            <div class="form-group">
+                <label for="country"><i class="fas fa-globe"></i> Country</label>
+                <select id="country" required>
+                    <option value="">Select Country</option>
+                    <option value="US">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="KE">Kenya</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="GH">Ghana</option>
+                    <option value="ZA">South Africa</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="networkProvider"><i class="fas fa-network-wired"></i> Network Provider</label>
+                <select id="networkProvider" required>
+                    <option value="">Select Network</option>
+                    <option value="MTN">MTN</option>
+                    <option value="Vodafone">Vodafone</option>
+                    <option value="Airtel">Airtel</option>
+                    <option value="T-Mobile">T-Mobile</option>
+                    <option value="Safaricom">Safaricom</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount"><i class="fas fa-money-bill-wave"></i> Amount</label>
+                <input type="number" id="amount" required placeholder="Enter amount to transfer">
+            </div>
+            
+            <div class="form-group">
+                <label for="recipientId"><i class="fas fa-id-card"></i> Recipient ID (Optional)</label>
+                <input type="text" id="recipientId" placeholder="Internal identifier if applicable">
+            </div>
+            
+            <button type="submit" id="transferBtn">
+                <i class="fas fa-paper-plane"></i> Transfer Money
+            </button>
+        </form>
+        
+        <div id="confirmation" class="confirmation-message hidden">
+            <h2><i class="fas fa-check-circle"></i> Transfer Successful!</h2>
+            <div id="transferDetails"></div>
+            <button id="newTransferBtn">
+                <i class="fas fa-plus-circle"></i> New Transfer
+            </button>
+        </div>
+    </div>
+
+    <script src="/frontend/js/transfers-mobile.js"></script>
+</body>
+</html>
