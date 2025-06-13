@@ -1,0 +1,146 @@
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary-color);
+    padding: 20px 0;
+    color: var(--light-text);
+    flex-shrink: 0;
+}
+
+.sidebar .nav {
+    padding: 0 15px;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .nav-link:hover {
+    color: var(--light-text);
+    background-color: rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar .text-red {
+    color: var(--accent-color);
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    width: calc(100% - var(--sidebar-width));
+}
+
+/* Analytics Specific Styles */
+.analytics-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    background-color: var(--card-bg);
+    transition: transform var(--transition-speed);
+    height: 100%;
+    border: none;
+}
+
+.analytics-card:hover {
+    transform: translateY(-5px);
+}
+
+.analytics-card .card-body {
+    padding: 1.5rem;
+}
+
+.analytics-card .card-title {
+    font-size: 1rem;
+    color: var(--gray-text);
+    margin-bottom: 0.75rem;
+}
+
+.analytics-card .card-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.analytics-card .card-change {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+.analytics-card .card-change.positive {
+    color: #FFD200; /* You may replace this with a new var if needed */
+}
+
+.analytics-card .card-change.negative {
+    color: #FFD200;
+}
+
+.chart-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    background-color: var(--card-bg);
+    height: 100%;
+    border: none;
+}
+
+.chart-card .card-body {
+    padding: 1rem;
+    height: 300px;
+}
+
+/* Table Styles */
+.table th {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .analytics-card {
+        margin-bottom: 1rem;
+    }
+
+    .chart-card .card-body {
+        height: 250px;
+    }
+}

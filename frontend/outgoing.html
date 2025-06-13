@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Money Received - MoMo Financial Dashboard</title>
-  <link rel="stylesheet" href="/frontend/css/incoming-money.css">
+  <title>Money Sent - MoMo Financial Dashboard</title>
+  <link rel="stylesheet" href="/frontend/css/outgoing.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -23,8 +23,8 @@
       <nav class="sidebar-nav">
         <ul>
           <li><a href="/index.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
-          <li class="active"><a href="/frontend/incoming_money.html"><i class="fas fa-arrow-down text-green"></i> <span>Money Received</span></a></li>
-          <li><a href="/frontend/outgoing.html"><i class="fas fa-arrow-up"></i> <span>Money Sent</span></a></li>
+          <li><a href="/frontend/incoming_money.html"><i class="fas fa-arrow-down"></i> <span>Money Received</span></a></li>
+          <li class="active"><a href="/frontend/outgoing.html"><i class="fas fa-arrow-up text-red"></i> <span>Money Sent</span></a></li>
           <li><a href="deposits.html"><i class="fas fa-university"></i> <span>Bank Deposits</span></a></li>
           <li><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
         </ul>
@@ -36,8 +36,8 @@
       <header class="header">
         <div class="header-content">
           <div class="header-text">
-            <h1><i class="fas fa-arrow-down text-green"></i> Money Received</h1>
-            <p class="header-subtitle">Track all incoming payments and transfers to your mobile money account</p>
+            <h1><i class="fas fa-arrow-up text-red"></i> Money Sent</h1>
+            <p class="header-subtitle">Track all outgoing payments and transfers from your mobile money account</p>
           </div>
         </div>
       </header>
@@ -46,11 +46,11 @@
       <section class="summary-cards">
         <div class="card">
           <div class="card-icon">
-            <i class="fas fa-coins text-green"></i>
+            <i class="fas fa-coins text-red"></i>
           </div>
           <div class="card-content">
-            <h3 id="totalReceived">12,450,000 RWF</h3>
-            <p>Total Received</p>
+            <h3 id="totalSent">8,750,000 RWF</h3>
+            <p>Total Sent</p>
           </div>
         </div>
         <div class="card">
@@ -58,7 +58,7 @@
             <i class="fas fa-chart-line text-blue"></i>
           </div>
           <div class="card-content">
-            <h3 id="transactionCount">47</h3>
+            <h3 id="transactionCount">32</h3>
             <p>Transactions</p>
           </div>
         </div>
@@ -67,7 +67,7 @@
             <i class="fas fa-calendar text-orange"></i>
           </div>
           <div class="card-content">
-            <h3 id="thisMonth">1,250,000 RWF</h3>
+            <h3 id="thisMonth">950,000 RWF</h3>
             <p>This Month</p>
           </div>
         </div>
@@ -87,7 +87,7 @@
           <table class="transaction-table">
             <thead>
               <tr>
-                <th>Sender</th>
+                <th>Recipient</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Status</th>
@@ -97,57 +97,57 @@
             <tbody>
               <tr>
                 <td>
-                  <div class="transaction-sender">
-                    <div class="transaction-sender-avatar">JK</div>
-                    <div class="transaction-sender-info">
-                      <h4>John Kagabo</h4>
-                      <p>+250 78 123 4567</p>
+                  <div class="transaction-recipient">
+                    <div class="transaction-recipient-avatar">EM</div>
+                    <div class="transaction-recipient-info">
+                      <h4>ElectroMart</h4>
+                      <p>Merchant Payment</p>
                     </div>
                   </div>
                 </td>
-                <td class="transaction-amount">250,000 RWF</td>
-                <td class="transaction-date">Today, 10:45 AM</td>
+                <td class="transaction-amount">350,000 RWF</td>
+                <td class="transaction-date">Today, 2:30 PM</td>
                 <td><span class="transaction-status status-completed">Completed</span></td>
                 <td class="transaction-actions">
-                  <button onclick="showTransactionDetails('John Kagabo', '250,000 RWF', 'Today, 10:45 AM', 'TXN-20230612-001', 'Payment for consulting services')">
+                  <button onclick="showTransactionDetails('ElectroMart', '350,000 RWF', 'Today, 2:30 PM', 'TXN-OUT-20230612-001', 'Payment for new appliances')">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <div class="transaction-sender">
-                    <div class="transaction-sender-avatar">MU</div>
-                    <div class="transaction-sender-info">
-                      <h4>Marie Uwase</h4>
-                      <p>+250 78 765 4321</p>
+                  <div class="transaction-recipient">
+                    <div class="transaction-recipient-avatar">AK</div>
+                    <div class="transaction-recipient-info">
+                      <h4>Alice Kwizera</h4>
+                      <p>+250 78 321 6547</p>
                     </div>
                   </div>
                 </td>
-                <td class="transaction-amount">150,000 RWF</td>
-                <td class="transaction-date">Today, 09:30 AM</td>
+                <td class="transaction-amount">120,000 RWF</td>
+                <td class="transaction-date">Today, 11:15 AM</td>
                 <td><span class="transaction-status status-completed">Completed</span></td>
                 <td class="transaction-actions">
-                  <button onclick="showTransactionDetails('Marie Uwase', '150,000 RWF', 'Today, 09:30 AM', 'TXN-20230612-002', 'Monthly rent payment')">
+                  <button onclick="showTransactionDetails('Alice Kwizera', '120,000 RWF', 'Today, 11:15 AM', 'TXN-OUT-20230612-002', 'School fees payment')">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <div class="transaction-sender">
-                    <div class="transaction-sender-avatar">AB</div>
-                    <div class="transaction-sender-info">
-                      <h4>AB Ltd</h4>
-                      <p>Company Account</p>
+                  <div class="transaction-recipient">
+                    <div class="transaction-recipient-avatar">RP</div>
+                    <div class="transaction-recipient-info">
+                      <h4>Rwanda Power</h4>
+                      <p>Utility Payment</p>
                     </div>
                   </div>
                 </td>
-                <td class="transaction-amount">500,000 RWF</td>
-                <td class="transaction-date">Yesterday, 4:15 PM</td>
+                <td class="transaction-amount">85,000 RWF</td>
+                <td class="transaction-date">Yesterday, 5:45 PM</td>
                 <td><span class="transaction-status status-completed">Completed</span></td>
                 <td class="transaction-actions">
-                  <button onclick="showTransactionDetails('AB Ltd', '500,000 RWF', 'Yesterday, 4:15 PM', 'TXN-20230611-001', 'Salary for May 2023')">
+                  <button onclick="showTransactionDetails('Rwanda Power', '85,000 RWF', 'Yesterday, 5:45 PM', 'TXN-OUT-20230611-001', 'Electricity bill payment')">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
@@ -159,6 +159,30 @@
     </main>
   </div>
 
-  <script src="/frontend/js/incoming-money.js"></script>
+  <!-- Transaction Details Modal -->
+  <div id="transactionModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalType">Transaction Details</h2>
+      
+      <div class="modal-details">
+        <div class="modal-row">
+          <span class="modal-label">Amount:</span>
+          <span id="modalAmount" class="modal-value">0 RWF</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">To:</span>
+          <span id="modalRecipient" class="modal-value">Unknown</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Date:</span>
+          <span id="modalDate" class="modal-value">Unknown</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="/frontend/js/outgoing.js"></script>
 </body>
 </html>

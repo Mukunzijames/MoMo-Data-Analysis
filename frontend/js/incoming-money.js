@@ -23,7 +23,7 @@ function loadTransactions() {
   document.getElementById('transactionsTableBody').innerHTML = 
     '<tr><td colspan="5" class="loading-row">Loading transactions...</td></tr>';
   
-  fetch('../momo_sms.xml')
+  fetch('MoMo-Data-Analysis/frontend/momo_sms.xml')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not ok');
       return response.text();

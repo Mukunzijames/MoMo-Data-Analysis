@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Deposits | Financial Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/css/deposit.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/frontend/incoming_money.html">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>Money Received</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/frontend/outgoing.html">
+                        <i class="fas fa-arrow-up text-red"></i>
+                        <span>Money Sent</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/frontend/deposits.html">
+                        <i class="fas fa-university"></i>
+                        <span>Bank Deposits</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container-fluid py-4">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2><i class="fas fa-university me-2"></i> Bank Deposits</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Bank Deposits</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Summary Card -->
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card text-white bg-success shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Deposits</h5>
+        <p class="card-text fs-4">$45,230.00</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deposit Transactions Table -->
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Deposit Transactions</h5>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDepositModal">
+          <i class="fas fa-plus me-1"></i> Add Deposit
+        </button>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Depositor</th>
+              <th>Bank</th>
+              <th>Amount</th>
+              <th>Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>2025-06-12</td>
+              <td>John Doe</td>
+              <td>Bank of Kigali</td>
+              <td>$1,000.00</td>
+              <td>REF12345</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2025-06-11</td>
+              <td>Jane Smith</td>
+              <td>Equity Bank</td>
+              <td>$850.00</td>
+              <td>REF67890</td>
+            </tr>
+            <!-- More rows as needed -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pagination -->
+<div class="pagination mt-4">
+  <button disabled>&laquo;</button>
+  <button class="active">1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>&raquo;</button>
+</div>
+
+<!-- Add Deposit Modal -->
+<div class="modal fade" id="addDepositModal" tabindex="-1" aria-labelledby="addDepositModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDepositModalLabel">Add New Deposit</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="depositorName" class="form-label">Depositor Name</label>
+          <input type="text" class="form-control" id="depositorName" required>
+        </div>
+        <div class="mb-3">
+          <label for="bankName" class="form-label">Bank</label>
+          <input type="text" class="form-control" id="bankName" required>
+        </div>
+        <div class="mb-3">
+          <label for="depositAmount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="depositAmount" required>
+        </div>
+        <div class="mb-3">
+          <label for="reference" class="form-label">Reference</label>
+          <input type="text" class="form-control" id="reference" required>
+        </div>
+        <div class="mb-3">
+          <label for="depositDate" class="form-label">Date</label>
+          <input type="date" class="form-control" id="depositDate" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Add Deposit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/frontend/js/incoming-money.js"></script>
+</body>
+</html>
