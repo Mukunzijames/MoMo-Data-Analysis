@@ -157,7 +157,7 @@ function initializeBundleCharts() {
 // Load bundle data from API
 async function loadBundleData() {
     try {
-        const response = await fetch('http://localhost:3000/api/bundles');
+        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/bundles');
         const json = await response.json();
 
         const tableBody = document.getElementById('bundlesTableBody');

@@ -6,7 +6,7 @@ function initializePowerPayments() {
 
 async function loadPowerPaymentsData() {
     try {
-        const response = await fetch('http://localhost:3000/api/cash-power');
+        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/cash-power');
         const jsonData = await response.json();
         const data = jsonData.data;
 

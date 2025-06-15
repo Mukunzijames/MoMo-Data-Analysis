@@ -1,7 +1,5 @@
-import 'dotenv/config'
-import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import { serveStatic } from '@hono/node-server/serve-static'
+import { handle } from 'hono/vercel'
 import { cors } from 'hono/cors'
 import apiRoutes from './routes/api'
 
@@ -20,7 +18,7 @@ app.use('*', cors({
 // API routes
 app.route('/api', apiRoutes)
 
-// Health check endpoint
+// Health check
 app.get('/health', (c) => {
   return c.json({
     status: 'ok',
@@ -28,14 +26,9 @@ app.get('/health', (c) => {
   })
 })
 
-// Serve static files (frontend)
-app.use('/*', serveStatic({ root: './' }))
-
-// MOMO Data analysis server Port 
-const port = process.env.PORT || 3000
-console.log(`Server is running on port ${port}`)
-
-serve({
-  fetch: app.fetch,
-  port: Number(port)
-}) 
+// Export for Vercel
+export const GET = handle(app)
+export const POST = handle(app)
+export const PUT = handle(app)
+export const DELETE = handle(app)
+export const OPTIONS = handle(app)
