@@ -1,18 +1,99 @@
 // Incoming Money page specific functions
 function initializeIncomingMoney() {
-    // Initialize counters
-    animateCounter('totalIncoming', 2345);
-    animateCounter('incomingAmount', 1248500);
-    animateCounter('avgIncoming', 5324);
+    console.log('Initializing Incoming Money page...');
+    loadIncomingData();
+}
+
+async function loadIncomingData() {
+    try {
+        const response = await fetch('http://localhost:3000/api/incoming-money');
+        const json = await response.json();
+
+        const tableBody = document.getElementById('incomingTableBody');
+        tableBody.innerHTML = ''; // clear existing rows
+
+        json.data.forEach(item => {
+            const row = document.createElement('tr');
+
+            // Define status based on transaction type
+            const status = item.status || 'Success';
+            
+            // Define status class for styling
+            const statusClass = status === 'Success' ? 'status-success' : 'status-failed';
+
+            row.innerHTML = `
+                <td>${item.sender || 'N/A'}</td>
+                <td>${Number(item.amount).toLocaleString()} RWF</td>
+                <td>${new Date(item.transactionDate).toLocaleString()}</td>
+                <td>${item.source || 'Mobile Money'}</td>
+                <td><span class="status ${statusClass}">${status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+        
+        // Add CSS for status indicators if not already added
+        addStatusStyles();
+        
+        // Update statistics
+        updateIncomingStatistics(json.data);
+
+    } catch (error) {
+        console.error('Failed to load incoming money data:', error);
+        const tableBody = document.getElementById('incomingTableBody');
+        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
+    }
+}
+
+// Update incoming money statistics
+function updateIncomingStatistics(data) {
+    if (!data || !Array.isArray(data) || data.length === 0) return;
     
-    // Initialize chart
-    initializeIncomingChart();
+    // Calculate statistics
+    const totalTransactions = data.length;
+    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+    const avgTransaction = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
     
-    // Load sample incoming transactions
-    loadIncomingTransactions();
+    // Update UI if elements exist
+    const totalIncomingEl = document.getElementById('totalIncoming');
+    const incomingAmountEl = document.getElementById('incomingAmount');
+    const avgIncomingEl = document.getElementById('avgIncoming');
     
-    // Initialize date filters
-    initializeDateFilters();
+    if (totalIncomingEl) totalIncomingEl.textContent = totalTransactions;
+    if (incomingAmountEl) incomingAmountEl.textContent = Number(totalAmount).toLocaleString();
+    if (avgIncomingEl) avgIncomingEl.textContent = Number(Math.round(avgTransaction)).toLocaleString();
+}
+
+// Format number with commas
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Add CSS styles for status indicators
+function addStatusStyles() {
+    // Check if styles are already added
+    if (document.getElementById('incoming-status-styles')) return;
+    
+    const styleElement = document.createElement('style');
+    styleElement.id = 'incoming-status-styles';
+    styleElement.textContent = `
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    `;
+    document.head.appendChild(styleElement);
 }
 
 // Initialize incoming money chart
@@ -184,11 +265,6 @@ function animateCounter(elementId, targetValue) {
     }, duration / steps);
 }
 
-// Format number with commas
-function formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 // Format date
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -198,4 +274,7 @@ function formatDate(dateString) {
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-} 
+}
+
+// Initialize when the document is ready
+document.addEventListener('DOMContentLoaded', initializeIncomingMoney); 

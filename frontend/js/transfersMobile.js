@@ -1,5 +1,5 @@
 // Transfers to Mobile Numbers page specific functions
-function initializeTransfersMobile() {
+function initializeMobileTransfers() {
     // Initialize counters
     animateCounter('totalTransfers', 1845);
     animateCounter('transfersAmount', 1050000);
@@ -8,8 +8,8 @@ function initializeTransfersMobile() {
     // Initialize charts
     initializeTransfersChart();
     
-    // Load sample transfers data
-    loadTransfersData();
+    // Load transfers data from API
+    loadMobileTransfersData();
     
     // Initialize filters
     initializeTransfersFilters();
@@ -108,58 +108,7 @@ function initializeTransfersChart() {
     });
 }
 
-// Load sample transfers data
-function loadTransfersData() {
-    const tableBody = document.getElementById('transfersTableBody');
-    if (!tableBody) return;
-    
-    const transfers = [
-        { recipient: '+250 78 123 4567', network: 'MTN', amount: 50000, date: '2023-06-15', status: 'success' },
-        { recipient: '+250 73 234 5678', network: 'Airtel', amount: 75000, date: '2023-06-14', status: 'success' },
-        { recipient: '+250 72 345 6789', network: 'Tigo', amount: 100000, date: '2023-06-13', status: 'pending' },
-        { recipient: '+250 78 456 7890', network: 'MTN', amount: 25000, date: '2023-06-12', status: 'success' },
-        { recipient: '+250 73 567 8901', network: 'Airtel', amount: 60000, date: '2023-06-11', status: 'failed' },
-        { recipient: '+250 78 678 9012', network: 'MTN', amount: 45000, date: '2023-06-10', status: 'success' },
-        { recipient: '+250 72 789 0123', network: 'Tigo', amount: 80000, date: '2023-06-09', status: 'success' },
-        { recipient: '+250 78 890 1234', network: 'MTN', amount: 35000, date: '2023-06-08', status: 'pending' }
-    ];
-    
-    let html = '';
-    
-    transfers.forEach(transfer => {
-        let networkClass = '';
-        switch(transfer.network) {
-            case 'MTN':
-                networkClass = 'network-mtn';
-                break;
-            case 'Airtel':
-                networkClass = 'network-airtel';
-                break;
-            case 'Tigo':
-                networkClass = 'network-tigo';
-                break;
-            default:
-                networkClass = 'network-other';
-        }
-        
-        html += `
-            <tr>
-                <td>${transfer.recipient}</td>
-                <td><span class="network-badge ${networkClass}">${transfer.network}</span></td>
-                <td>RWF ${formatNumber(transfer.amount)}</td>
-                <td>${formatDate(transfer.date)}</td>
-                <td><span class="status status-${transfer.status}">${capitalizeFirstLetter(transfer.status)}</span></td>
-                <td>
-                    <button class="action-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-    
-    tableBody.innerHTML = html;
-}
+// Function removed
 
 // Initialize transfers filters
 function initializeTransfersFilters() {
@@ -244,4 +193,104 @@ function formatDate(dateString) {
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-} 
+}
+
+// Mobile Transfers page specific functions
+function initializeMobileTransfers() {
+    console.log('Initializing Mobile Transfers page...');
+    loadMobileTransfersData();
+}
+
+async function loadMobileTransfersData() {
+    try {
+        const response = await fetch('http://localhost:3000/api/mobile-transfers');
+        const json = await response.json();
+
+        const tableBody = document.getElementById('transfersTableBody');
+        tableBody.innerHTML = ''; // clear existing rows
+
+        json.data.forEach(item => {
+            const row = document.createElement('tr');
+            
+            // Define status based on transaction status
+            const status = item.status || 'Completed';
+            
+            // Define status class for styling
+            const statusClass = status === 'Completed' ? 'status-success' : 'status-pending';
+
+            row.innerHTML = `
+                <td>${item.recipient || 'N/A'}</td>
+                <td>${item.network || 'MTN'}</td>
+                <td>${Number(item.amount).toLocaleString()} RWF</td>
+                <td>${new Date(item.transactionDate).toLocaleString()}</td>
+                <td><span class="status ${statusClass}">${status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+        
+        // Add CSS for status indicators if not already added
+        addStatusStyles();
+        
+        // Update statistics
+        updateMobileTransfersStatistics(json.data);
+
+    } catch (error) {
+        console.error('Failed to load transfers:', error);
+        const tableBody = document.getElementById('transfersTableBody');
+        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
+    }
+}
+
+// Update mobile transfers statistics
+function updateMobileTransfersStatistics(data) {
+    if (!data || !Array.isArray(data) || data.length === 0) return;
+    
+    // Calculate statistics
+    const totalTransfers = data.length;
+    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+    const avgTransfer = totalTransfers > 0 ? totalAmount / totalTransfers : 0;
+    
+    // Update UI if elements exist
+    const totalTransfersEl = document.getElementById('totalTransfers');
+    const transfersAmountEl = document.getElementById('transfersAmount');
+    const avgTransferEl = document.getElementById('avgTransfer');
+    
+    if (totalTransfersEl) totalTransfersEl.textContent = totalTransfers;
+    if (transfersAmountEl) transfersAmountEl.textContent = Number(totalAmount).toLocaleString();
+    if (avgTransferEl) avgTransferEl.textContent = Number(Math.round(avgTransfer)).toLocaleString();
+}
+
+// Add CSS styles for status indicators
+function addStatusStyles() {
+    // Check if styles are already added
+    if (document.getElementById('transfers-status-styles')) return;
+    
+    const styleElement = document.createElement('style');
+    styleElement.id = 'transfers-status-styles';
+    styleElement.textContent = `
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
+
+// Initialize when the document is ready
+document.addEventListener('DOMContentLoaded', initializeMobileTransfers); 

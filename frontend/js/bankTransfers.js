@@ -1,19 +1,103 @@
 // Bank Transfers page specific functions
 function initializeBankTransfers() {
-    // Initialize counters
-    animateCounter('totalBankTransfers', 356);
-    animateCounter('bankTransferAmount', 1250000);
-    animateCounter('avgBankTransfer', 3511);
-    
-    // Initialize charts
-    initializeBankTransferCharts();
-    
-    // Load sample bank transfers data
+    console.log('Initializing Bank Transfers page...');
     loadBankTransfersData();
-    
-    // Initialize filters
-    initializeBankTransferFilters();
 }
+
+async function loadBankTransfersData() {
+    try {
+        const response = await fetch('http://localhost:3000/api/bank-transfers');
+        const json = await response.json();
+
+        const tableBody = document.getElementById('bankTransfersTableBody');
+        tableBody.innerHTML = ''; // Clear previous data
+
+        json.data.forEach(item => {
+            const row = document.createElement('tr');
+            
+            // Define status based on transaction status
+            const status = item.status || 'Completed';
+            
+            // Define status class for styling
+            const statusClass = status === 'Completed' ? 'status-success' : 
+                              (status === 'Pending' ? 'status-pending' : 'status-failed');
+
+            row.innerHTML = `
+                <td>${item.bankName || 'N/A'}</td>
+                <td>${item.accountNumber || 'N/A'}</td>
+                <td>${Number(item.amount).toLocaleString()} RWF</td>
+                <td>${new Date(item.transactionDate).toLocaleString()}</td>
+                <td><span class="status ${statusClass}">${status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+        
+        // Add CSS for status indicators if not already added
+        addStatusStyles();
+        
+        // Update statistics
+        updateBankTransfersStatistics(json.data);
+
+    } catch (error) {
+        console.error('Error fetching bank transfers:', error);
+        const tableBody = document.getElementById('bankTransfersTableBody');
+        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
+    }
+}
+
+// Update bank transfers statistics
+function updateBankTransfersStatistics(data) {
+    if (!data || !Array.isArray(data) || data.length === 0) return;
+    
+    // Calculate statistics
+    const totalTransfers = data.length;
+    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+    const avgTransfer = totalTransfers > 0 ? totalAmount / totalTransfers : 0;
+    
+    // Update UI if elements exist
+    const totalBankTransfersEl = document.getElementById('totalBankTransfers');
+    const bankTransferAmountEl = document.getElementById('bankTransferAmount');
+    const avgBankTransferEl = document.getElementById('avgBankTransfer');
+    
+    if (totalBankTransfersEl) totalBankTransfersEl.textContent = totalTransfers;
+    if (bankTransferAmountEl) bankTransferAmountEl.textContent = Number(totalAmount).toLocaleString();
+    if (avgBankTransferEl) avgBankTransferEl.textContent = Number(Math.round(avgTransfer)).toLocaleString();
+}
+
+// Add CSS styles for status indicators
+function addStatusStyles() {
+    // Check if styles are already added
+    if (document.getElementById('bank-transfers-status-styles')) return;
+    
+    const styleElement = document.createElement('style');
+    styleElement.id = 'bank-transfers-status-styles';
+    styleElement.textContent = `
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
+
+// Initialize when the document is ready
+document.addEventListener('DOMContentLoaded', initializeBankTransfers);
 
 // Initialize bank transfer charts
 function initializeBankTransferCharts() {
@@ -151,44 +235,6 @@ function initializeBankTransferCharts() {
             }
         }
     });
-}
-
-// Load sample bank transfers data
-function loadBankTransfersData() {
-    const tableBody = document.getElementById('bankTransfersTableBody');
-    if (!tableBody) return;
-    
-    const transfers = [
-        { bank: 'Bank of Kigali', accountNumber: '1234567890', amount: 150000, date: '2023-06-15', status: 'success' },
-        { bank: 'Equity Bank', accountNumber: '2345678901', amount: 75000, date: '2023-06-14', status: 'success' },
-        { bank: 'I&M Bank', accountNumber: '3456789012', amount: 200000, date: '2023-06-13', status: 'pending' },
-        { bank: 'Access Bank', accountNumber: '4567890123', amount: 100000, date: '2023-06-12', status: 'success' },
-        { bank: 'Bank of Kigali', accountNumber: '5678901234', amount: 50000, date: '2023-06-11', status: 'failed' },
-        { bank: 'Equity Bank', accountNumber: '6789012345', amount: 125000, date: '2023-06-10', status: 'success' },
-        { bank: 'I&M Bank', accountNumber: '7890123456', amount: 80000, date: '2023-06-09', status: 'success' },
-        { bank: 'Access Bank', accountNumber: '8901234567', amount: 175000, date: '2023-06-08', status: 'pending' }
-    ];
-    
-    let html = '';
-    
-    transfers.forEach(transfer => {
-        html += `
-            <tr>
-                <td>${transfer.bank}</td>
-                <td>${maskAccountNumber(transfer.accountNumber)}</td>
-                <td>RWF ${formatNumber(transfer.amount)}</td>
-                <td>${formatDate(transfer.date)}</td>
-                <td><span class="status status-${transfer.status}">${capitalizeFirstLetter(transfer.status)}</span></td>
-                <td>
-                    <button class="action-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-    
-    tableBody.innerHTML = html;
 }
 
 // Initialize bank transfer filters
