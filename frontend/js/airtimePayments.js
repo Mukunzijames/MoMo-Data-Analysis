@@ -6,7 +6,7 @@ function initializeAirtimePayments() {
 
 async function loadAirtimeData() {
     try {
-        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/airtime-bill-payments');
+        const response = await fetch('http://localhost:3000/api/airtime-bill-payments');
         const jsonData = await response.json();
         const data = jsonData.data;
 
