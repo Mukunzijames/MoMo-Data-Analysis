@@ -6,7 +6,7 @@ function initializeBankTransfers() {
 
 async function loadBankTransfersData() {
     try {
-        const response = await fetch('http://localhost:3000/api/bank-transfers');
+        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/bank-transfers');
         const json = await response.json();
 
         const tableBody = document.getElementById('bankTransfersTableBody');

@@ -6,7 +6,7 @@ function initializeIncomingMoney() {
 
 async function loadIncomingData() {
     try {
-        const response = await fetch('http://localhost:3000/api/incoming-money');
+        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/incoming-money');
         const json = await response.json();
 
         const tableBody = document.getElementById('incomingTableBody');
