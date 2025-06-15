@@ -6,6 +6,10 @@
       "use": "@vercel/node"
     },
     {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "frontend/**",
       "use": "@vercel/static"
     }
@@ -16,12 +20,8 @@
       "dest": "src/index.ts"
     },
     {
-      "src": "/health",
-      "dest": "src/index.ts"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/$1"
     }
   ]
-}
+} 

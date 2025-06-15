@@ -6,7 +6,7 @@ function initializeThirdParty() {
 
 async function loadThirdPartyData() {
     try {
-        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/third-party');
+        const response = await fetch('http://localhost:3000/api/third-party');
         const jsonData = await response.json();
         const data = jsonData.data;
 

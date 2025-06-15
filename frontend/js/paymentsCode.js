@@ -6,7 +6,7 @@ function initializePaymentsCode() {
 
 async function loadPaymentsData() {
     try {
-        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/code-holder-payments');
+        const response = await fetch('http://localhost:3000/api/code-holder-payments');
         const jsonData = await response.json();
         const data = jsonData.data;
 

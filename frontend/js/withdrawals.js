@@ -45,7 +45,7 @@ async function loadWithdrawalStatistics() {
 // Load withdrawal transaction data from API
 async function loadWithdrawalsData() {
     try {
-        const response = await fetch('https://mo-mo-data-analysis.vercel.app/api/withdrawals');
+        const response = await fetch('http://localhost:3000/api/withdrawals');
         const jsonData = await response.json();
         const data = jsonData.data;
 
