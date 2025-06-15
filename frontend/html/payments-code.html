@@ -1,0 +1,134 @@
+<div class="page-header">
+    <h1>Payments to Code Holders</h1>
+    <div class="filter-controls">
+        <div class="filter-item">
+            <label for="paymentsDateFilter">Date Range:</label>
+            <select id="paymentsDateFilter" class="form-control">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days" selected>Last 30 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="paymentsStatusFilter">Status:</label>
+            <select id="paymentsStatusFilter" class="form-control">
+                <option value="all" selected>All Statuses</option>
+                <option value="success">Success</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
+</div>
+
+<div class="stats-cards">
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Payments</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="counter" id="totalPaymentsCode">0</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Amount</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="paymentsCodeAmount">0</span></h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Average Payment</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="avgPaymentCode">0</span></h2>
+        </div>
+    </div>
+</div>
+
+<div class="chart-grid">
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3>Monthly Transactions</h3>
+        </div>
+        <div class="chart-body">
+            <canvas id="paymentsCodeChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3>Monthly Payment Amounts</h3>
+        </div>
+        <div class="chart-body">
+            <canvas id="paymentAmountsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="feature-cards">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-qrcode"></i>
+        </div>
+        <div class="feature-content">
+            <h3>Generate Payment Code</h3>
+            <p>Create a new payment code for a recipient</p>
+            <button class="btn btn-outline">Generate Code</button>
+        </div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="feature-content">
+            <h3>Verify Payment Code</h3>
+            <p>Check if a payment code is valid and its status</p>
+            <button class="btn btn-outline">Verify Code</button>
+        </div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-file-export"></i>
+        </div>
+        <div class="feature-content">
+            <h3>Batch Processing</h3>
+            <p>Upload a file to process multiple payments at once</p>
+            <button class="btn btn-outline">Upload File</button>
+        </div>
+    </div>
+</div>
+
+<div class="transactions-section">
+    <div class="section-header">
+        <h2>Recent Payments</h2>
+        <button class="btn btn-outline">View All</button>
+    </div>
+    <div class="transactions-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="paymentsCodeTableBody">
+                <!-- Payment data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="../js/paymentsCode.js"></script> 

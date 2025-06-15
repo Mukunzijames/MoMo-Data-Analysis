@@ -1,0 +1,207 @@
+<div class="page-header">
+    <h1>Withdrawals from Agents</h1>
+    <div class="filter-controls">
+        <div class="filter-item">
+            <label for="withdrawalsDateFilter">Date Range:</label>
+            <select id="withdrawalsDateFilter" class="form-control">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days" selected>Last 30 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="withdrawalsLocationFilter">Location:</label>
+            <select id="withdrawalsLocationFilter" class="form-control">
+                <option value="all" selected>All Locations</option>
+                <option value="kigali">Kigali</option>
+                <option value="eastern">Eastern Province</option>
+                <option value="western">Western Province</option>
+                <option value="northern">Northern Province</option>
+                <option value="southern">Southern Province</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
+</div>
+
+<div class="stats-cards">
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Withdrawals</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="counter" id="totalWithdrawals">0</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Amount</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="withdrawalAmount">0</span></h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Average Withdrawal</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="avgWithdrawal">0</span></h2>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="main-content-area">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Monthly Withdrawals</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="withdrawalsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Amount Trends</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="withdrawalAmountChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Agent Locations</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="agentDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactions-section">
+            <div class="section-header">
+                <h2>Recent Withdrawals</h2>
+                <button class="btn btn-outline">View All</button>
+            </div>
+            <div class="transactions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Location</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="withdrawalsTableBody">
+                        <!-- Withdrawals data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-content-area">
+        <div class="card">
+            <div class="card-header">
+                <h3>Find Nearby Agents</h3>
+            </div>
+            <div class="card-body">
+                <form id="findAgentForm">
+                    <div class="form-group">
+                        <label for="locationSearch">Search Location</label>
+                        <div class="input-group">
+                            <input type="text" id="locationSearch" class="form-control" placeholder="Enter location or use current" required>
+                            <button type="button" id="currentLocationButton" class="btn btn-outline">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="searchRadius">Search Radius (km)</label>
+                        <input type="range" id="searchRadius" class="form-range" min="1" max="10" value="5">
+                        <div class="range-value"><span id="radiusValue">5</span> km</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Find Agents</button>
+                </form>
+                <div class="map-placeholder">
+                    <div class="map-overlay">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Map will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Recent Agents</h3>
+            </div>
+            <div class="card-body">
+                <div class="agent-list">
+                    <div class="agent-item">
+                        <div class="agent-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">MoMo Agent #12345</div>
+                            <div class="agent-location">Kigali City Center</div>
+                        </div>
+                        <div class="agent-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <div class="agent-item">
+                        <div class="agent-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">MoMo Agent #23456</div>
+                            <div class="agent-location">Nyamirambo</div>
+                        </div>
+                        <div class="agent-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="agent-item">
+                        <div class="agent-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">MoMo Agent #34567</div>
+                            <div class="agent-location">Remera</div>
+                        </div>
+                        <div class="agent-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="frontend/js/withdrawals.js"></script> 

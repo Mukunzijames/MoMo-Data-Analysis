@@ -7,7 +7,8 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "import-xml": "ts-node src/scripts/importXmlData.ts",
+    "process-sms": "node sms-processor.js",
+    "import-sms": "tsx src/scripts/import-momo-transactions.ts",      
     "db:generate": "drizzle-kit generate:pg",
     "db:push": "drizzle-kit",
     "test-connection": "ts-node src/scripts/testConnection.ts"

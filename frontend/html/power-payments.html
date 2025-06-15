@@ -1,0 +1,175 @@
+<div class="page-header">
+    <h1>Cash Power Bill Payments</h1>
+    <div class="filter-controls">
+        <div class="filter-item">
+            <label for="powerDateFilter">Date Range:</label>
+            <select id="powerDateFilter" class="form-control">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days" selected>Last 30 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
+</div>
+
+<div class="stats-cards">
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Transactions</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="counter" id="totalPower">0</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Amount</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="powerAmount">0</span></h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Average Transaction</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="avgPower">0</span></h2>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="main-content-area">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Monthly Cash Power Purchases</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="powerChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Amount Trends</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="powerAmountChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Amount Distribution</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="powerDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactions-section">
+            <div class="section-header">
+                <h2>Recent Cash Power Purchases</h2>
+                <button class="btn btn-outline">View All</button>
+            </div>
+            <div class="transactions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Meter Number</th>
+                            <th>Customer Name</th>
+                            <th>Amount</th>
+                            <th>Units</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="powerTableBody">
+                        <!-- Cash Power data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-content-area">
+        <div class="card">
+            <div class="card-header">
+                <h3>Quick Purchase</h3>
+            </div>
+            <div class="card-body">
+                <form id="quickPurchaseForm">
+                    <div class="form-group">
+                        <label for="meterNumber">Meter Number</label>
+                        <div class="input-group">
+                            <input type="text" id="meterNumber" class="form-control" placeholder="Enter meter number" required>
+                            <button type="button" id="lookupButton" class="btn btn-outline">Lookup</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" class="form-control" placeholder="Customer name will appear here" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Quick Amount</label>
+                        <div class="preset-amounts">
+                            <button type="button" class="preset-amount" data-amount="1000">1,000</button>
+                            <button type="button" class="preset-amount" data-amount="2000">2,000</button>
+                            <button type="button" class="preset-amount" data-amount="5000">5,000</button>
+                            <button type="button" class="preset-amount" data-amount="10000">10,000</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="powerAmount">Amount (RWF)</label>
+                        <input type="number" id="powerAmount" class="form-control" min="500" placeholder="Enter amount" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Purchase Cash Power</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Saved Meters</h3>
+            </div>
+            <div class="card-body">
+                <div class="saved-numbers">
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">12345678</div>
+                            <div class="label">Home</div>
+                        </div>
+                        <button class="btn btn-outline btn-sm">Recharge</button>
+                    </div>
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">23456789</div>
+                            <div class="label">Office</div>
+                        </div>
+                        <button class="btn btn-outline btn-sm">Recharge</button>
+                    </div>
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">34567890</div>
+                            <div class="label">Shop</div>
+                        </div>
+                        <button class="btn btn-outline btn-sm">Recharge</button>
+                    </div>
+                    <button class="btn btn-outline btn-block">Add New Meter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="frontend/js/powerPayments.js"></script> 

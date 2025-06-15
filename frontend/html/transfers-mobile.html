@@ -1,0 +1,140 @@
+<div class="page-header">
+    <h1>Transfers to Mobile Numbers</h1>
+    <div class="filter-controls">
+        <div class="filter-item">
+            <label for="transfersDateFilter">Date Range:</label>
+            <select id="transfersDateFilter" class="form-control">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days" selected>Last 30 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="transfersNetworkFilter">Network:</label>
+            <select id="transfersNetworkFilter" class="form-control">
+                <option value="all" selected>All Networks</option>
+                <option value="mtn">MTN</option>
+                <option value="airtel">Airtel</option>
+                <option value="tigo">Tigo</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
+</div>
+
+<div class="stats-cards">
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Transfers</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="counter" id="totalTransfers">0</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Amount</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="transfersAmount">0</span></h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Average Transfer</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="avgTransfer">0</span></h2>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="main-content-area">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Monthly Transfers</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="transfersChart"></canvas>
+            </div>
+        </div>
+
+        <div class="transactions-section">
+            <div class="section-header">
+                <h2>Recent Transfers</h2>
+                <button class="btn btn-outline">View All</button>
+            </div>
+            <div class="transactions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Recipient</th>
+                            <th>Network</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transfersTableBody">
+                        <!-- Transfer data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-content-area">
+        <div class="card">
+            <div class="card-header">
+                <h3>New Transfer</h3>
+            </div>
+            <div class="card-body">
+                <form id="newTransferForm">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="text" id="phoneNumber" class="form-control" placeholder="+250 78 123 4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="networkSelect">Network</label>
+                        <select id="networkSelect" class="form-control" required>
+                            <option value="" disabled selected>Select Network</option>
+                            <option value="MTN">MTN</option>
+                            <option value="Airtel">Airtel</option>
+                            <option value="Tigo">Tigo</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transferAmount">Amount (RWF)</label>
+                        <input type="number" id="transferAmount" class="form-control" min="500" placeholder="Enter amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transferNote">Note (Optional)</label>
+                        <textarea id="transferNote" class="form-control" rows="2" placeholder="Add a note"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send Transfer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Transfers by Network</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="networkChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="frontend/js/transfersMobile.js"></script> 
