@@ -1,335 +1,72 @@
 // Airtime Bill Payments page specific functions
 function initializeAirtimePayments() {
-    // Load Axios if not already loaded
-    if (!window.axios) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js';
-        script.onload = function() {
-            fetchAndInitializeData();
-        };
-        document.head.appendChild(script);
-    } else {
-        fetchAndInitializeData();
-    }
-    
-    // Initialize filters
-    initializeAirtimeFilters();
-    
-    // Initialize quick purchase form
-    initializeQuickPurchaseForm();
+    console.log('Initializing Airtime Bill Payments page...');
+    loadAirtimeData();
 }
 
-// Fetch data and initialize the page
-async function fetchAndInitializeData() {
+async function loadAirtimeData() {
     try {
-        console.log('Fetching airtime payments data from API...');
+        const response = await fetch('http://localhost:3000/api/airtime-bill-payments');
+        const jsonData = await response.json();
+        const data = jsonData.data;
+
+        const tableBody = document.getElementById('airtimeTableBody');
+        tableBody.innerHTML = ''; // Clear previous rows
+
+        data.forEach(item => {
+            const row = document.createElement('tr');
+
+            // Detect network from recipient or description
+            const network = detectNetwork(item.recipient, item.description);
+            
+            // Define status based on transaction type
+            const status = item.transactionType?.toLowerCase().includes('failed') ? 'Failed' : 'Success';
+            
+            // Define status class for styling
+            const statusClass = status === 'Success' ? 'status-success' : 'status-failed';
+
+            // Format date
+            const date = new Date(item.transactionDate).toLocaleString();
+
+            row.innerHTML = `
+                <td>${item.recipient || 'N/A'}</td>
+                <td>${network}</td>
+                <td>${formatNumber(parseFloat(item.amount))} RWF</td>
+                <td>${date}</td>
+                <td><span class="status ${statusClass}">${status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
         
-        // Fetch statistics
-        const statsResponse = await axios.get('http://127.0.0.1:5500/api/airtime-bill-payments/statistics');
-        console.log('Airtime payments statistics response:', statsResponse);
-        updateStatistics(statsResponse.data);
+        // Add CSS for status indicators if not already added
+        addStatusStyles();
         
-        // Fetch transaction data
-        const airtimeResponse = await axios.get('http://127.0.0.1:5500/api/airtime-bill-payments');
-        console.log('Airtime payments response:', airtimeResponse);
-        loadAirtimeData(airtimeResponse.data);
-        
-        // Fetch data for charts
-        await initializeAirtimeCharts();
+        // Update statistics
+        updateAirtimeStatistics(data);
+
     } catch (error) {
-        console.error('Error fetching airtime payments data:', error);
-        console.error('Error details:', error.response ? error.response.data : 'No response data');
-        showErrorNotification('Failed to load data. Please try again later.');
+        console.error('Error loading airtime data:', error);
     }
 }
 
-// Update statistics on the page
-function updateStatistics(stats) {
-    if (!stats) return;
+// Update airtime statistics
+function updateAirtimeStatistics(data) {
+    if (!data || !Array.isArray(data) || data.length === 0) return;
     
-    // Update counters with real data
-    animateCounter('totalAirtime', stats.count || 0);
-    animateCounter('airtimeAmount', stats.totalAmount || 0);
-    animateCounter('avgAirtime', stats.count > 0 ? Math.floor(stats.totalAmount / stats.count) : 0);
-}
-
-// Initialize airtime chart with real data
-async function initializeAirtimeChart() {
-    try {
-        // Fetch providers data
-        const providersResponse = await axios.get('/api/airtime-bill-payments/top-providers');
-        const providers = providersResponse.data || [];
-        
-        // Fetch bill types data
-        const billTypesResponse = await axios.get('/api/airtime-bill-payments/bill-types');
-        const billTypes = billTypesResponse.data || [];
-        
-        // Initialize transactions chart
-        initializeTransactionsChart();
-        
-        // Initialize network distribution chart
-        initializeNetworkDistributionChart(providers);
-        
-        // Initialize amount distribution chart
-        initializeAmountDistributionChart(billTypes);
-    } catch (error) {
-        console.error('Error fetching chart data:', error);
-        // Initialize charts with empty data
-        initializeTransactionsChart();
-        initializeNetworkDistributionChart([]);
-        initializeAmountDistributionChart([]);
-    }
-}
-
-// Initialize transactions chart
-function initializeTransactionsChart(trendsData) {
-    const ctx = document.getElementById('airtimeChart');
-    if (!ctx) return;
+    // Calculate statistics
+    const totalTransactions = data.length;
+    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+    const avgTransaction = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
     
-    // For this chart, we'll use dummy data since we don't have monthly data from API
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Number of Transactions',
-                data: trendsData || [110, 125, 135, 120, 145, 150, 130, 140, 155, 160, 145, 132],
-                backgroundColor: 'rgba(0, 107, 134, 0.1)',
-                borderColor: 'rgba(0, 107, 134, 1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Transactions'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Month'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Airtime Purchases Trends'
-                }
-            }
-        }
-    });
-}
-
-// Initialize network distribution chart
-function initializeNetworkDistributionChart(providersData) {
-    const networkCtx = document.getElementById('networkDistributionChart');
-    if (!networkCtx) return;
+    // Update UI if elements exist
+    const totalAirtimeEl = document.getElementById('totalAirtime');
+    const airtimeAmountEl = document.getElementById('airtimeAmount');
+    const avgAirtimeEl = document.getElementById('avgAirtime');
     
-    // Process providers data for chart
-    let labels = [];
-    let data = [];
-    
-    if (providersData.length > 0) {
-        // Calculate total for percentages
-        const total = providersData.reduce((sum, provider) => sum + (provider.frequency || 0), 0);
-        
-        // Get top 4 providers and group the rest as "Other Networks"
-        const top4Providers = providersData.slice(0, 4);
-        const otherProviders = providersData.slice(4);
-        const otherProvidersTotal = otherProviders.reduce((sum, provider) => sum + (provider.frequency || 0), 0);
-        
-        // Create labels and data
-        labels = top4Providers.map(provider => provider.provider || 'Unknown');
-        data = top4Providers.map(provider => ((provider.frequency || 0) / total * 100).toFixed(1));
-        
-        // Add "Other Networks" if there are any
-        if (otherProvidersTotal > 0) {
-            labels.push('Other Networks');
-            data.push((otherProvidersTotal / total * 100).toFixed(1));
-        }
-    } else {
-        labels = ['MTN', 'Airtel', 'Tigo', 'Other Networks'];
-        data = [50, 25, 20, 5]; // Default data if no real data available
-    }
-    
-    const networkChart = new Chart(networkCtx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: [
-                    'rgba(255, 210, 0, 0.7)',
-                    'rgba(220, 53, 69, 0.7)',
-                    'rgba(0, 123, 255, 0.7)',
-                    'rgba(108, 117, 125, 0.7)'
-                ],
-                borderColor: [
-                    'rgba(255, 210, 0, 1)',
-                    'rgba(220, 53, 69, 1)',
-                    'rgba(0, 123, 255, 1)',
-                    'rgba(108, 117, 125, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                },
-                title: {
-                    display: true,
-                    text: 'Airtime by Network (%)'
-                }
-            }
-        }
-    });
-}
-
-// Initialize amount distribution chart
-function initializeAmountDistributionChart(billTypesData) {
-    const amountCtx = document.getElementById('amountDistributionChart');
-    if (!amountCtx) return;
-    
-    // Process bill types data for chart
-    let labels = [];
-    let data = [];
-    
-    if (billTypesData.length > 0) {
-        // Calculate total for percentages
-        const total = billTypesData.reduce((sum, type) => sum + (type.frequency || 0), 0);
-        
-        // Get top 6 bill types and group the rest as "Other"
-        const top6Types = billTypesData.slice(0, 6);
-        const otherTypes = billTypesData.slice(6);
-        const otherTypesTotal = otherTypes.reduce((sum, type) => sum + (type.frequency || 0), 0);
-        
-        // Create labels and data
-        labels = top6Types.map(type => type.category || 'Unknown');
-        data = top6Types.map(type => ((type.frequency || 0) / total * 100).toFixed(1));
-        
-        // Add "Other" if there are any
-        if (otherTypesTotal > 0) {
-            labels.push('Other');
-            data.push((otherTypesTotal / total * 100).toFixed(1));
-        }
-    } else {
-        labels = ['RWF 100', 'RWF 500', 'RWF 1,000', 'RWF 2,000', 'RWF 5,000', 'RWF 10,000+'];
-        data = [10, 25, 30, 20, 10, 5]; // Default data if no real data available
-    }
-    
-    const amountChart = new Chart(amountCtx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: [
-                    'rgba(0, 107, 134, 0.7)',
-                    'rgba(255, 210, 0, 0.7)',
-                    'rgba(255, 149, 0, 0.7)',
-                    'rgba(76, 175, 80, 0.7)',
-                    'rgba(33, 150, 243, 0.7)',
-                    'rgba(108, 117, 125, 0.7)'
-                ],
-                borderColor: [
-                    'rgba(0, 107, 134, 1)',
-                    'rgba(255, 210, 0, 1)',
-                    'rgba(255, 149, 0, 1)',
-                    'rgba(76, 175, 80, 1)',
-                    'rgba(33, 150, 243, 1)',
-                    'rgba(108, 117, 125, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                },
-                title: {
-                    display: true,
-                    text: 'Bill Types Distribution (%)'
-                }
-            }
-        }
-    });
-}
-
-// Load airtime payments data from API
-function loadAirtimeData(response) {
-    const tableBody = document.getElementById('airtimeTableBody');
-    if (!tableBody) return;
-    
-    // Check if we have data and it's in the expected format
-    if (!response || !response.data || !Array.isArray(response.data)) {
-        tableBody.innerHTML = '<tr><td colspan="6">No data available</td></tr>';
-        return;
-    }
-    
-    const payments = response.data;
-    
-    if (payments.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="6">No payments found</td></tr>';
-        return;
-    }
-    
-    let html = '';
-    
-    payments.forEach(payment => {
-        // Determine network based on recipient or description
-        const network = detectNetwork(payment.recipient, payment.description);
-        let networkClass = '';
-        
-        switch(network) {
-            case 'MTN':
-                networkClass = 'network-mtn';
-                break;
-            case 'Airtel':
-                networkClass = 'network-airtel';
-                break;
-            case 'Tigo':
-                networkClass = 'network-tigo';
-                break;
-            default:
-                networkClass = 'network-other';
-        }
-        
-        html += `
-            <tr>
-                <td>${payment.recipient || 'N/A'}</td>
-                <td><span class="network-badge ${networkClass}">${network}</span></td>
-                <td>RWF ${formatNumber(payment.amount || 0)}</td>
-                <td>${formatDate(payment.transactionDate)}</td>
-                <td><span class="status status-success">Completed</span></td>
-                <td>
-                    <button class="action-btn" onclick="viewPaymentDetails('${payment.id}')">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-    
-    tableBody.innerHTML = html;
+    if (totalAirtimeEl) totalAirtimeEl.textContent = totalTransactions;
+    if (airtimeAmountEl) airtimeAmountEl.textContent = formatNumber(totalAmount);
+    if (avgAirtimeEl) avgAirtimeEl.textContent = formatNumber(Math.round(avgTransaction));
 }
 
 // Detect network from recipient or description
@@ -349,71 +86,39 @@ function detectNetwork(recipient, description) {
     }
 }
 
-// View payment details
-function viewPaymentDetails(paymentId) {
-    if (!paymentId) return;
-    
-    // Fetch payment details and show in a modal
-    axios.get(`http://127.0.0.1:5500/api/airtime-bill-payments/${paymentId}`)
-        .then(response => {
-            const payment = response.data;
-            showPaymentDetailsModal(payment);
-        })
-        .catch(error => {
-            console.error('Error fetching payment details:', error);
-            showErrorNotification('Failed to load payment details.');
-        });
+// Format number with commas
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// Show payment details modal
-function showPaymentDetailsModal(payment) {
-    // Determine network based on recipient or description
-    const network = detectNetwork(payment.recipient, payment.description);
+// Add CSS styles for status indicators
+function addStatusStyles() {
+    // Check if styles are already added
+    if (document.getElementById('airtime-status-styles')) return;
     
-    // Create modal HTML
-    const modalHtml = `
-        <div class="modal-backdrop"></div>
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Payment Details</h2>
-                <button class="close-btn" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="payment-details">
-                    <p><strong>Recipient:</strong> ${payment.recipient || 'N/A'}</p>
-                    <p><strong>Network:</strong> ${network}</p>
-                    <p><strong>Amount:</strong> RWF ${formatNumber(payment.amount || 0)}</p>
-                    <p><strong>Transaction Date:</strong> ${formatDate(payment.transactionDate)}</p>
-                    <p><strong>Transaction ID:</strong> ${payment.transactionId || 'N/A'}</p>
-                    <p><strong>Category:</strong> ${payment.category || 'N/A'}</p>
-                    <p><strong>Description:</strong> ${payment.description || 'N/A'}</p>
-                    <p><strong>Fee:</strong> RWF ${formatNumber(payment.fee || 0)}</p>
-                    <p><strong>Balance After:</strong> RWF ${formatNumber(payment.balance || 0)}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="closeModal()">Close</button>
-            </div>
-        </div>
+    const styleElement = document.createElement('style');
+    styleElement.id = 'airtime-status-styles';
+    styleElement.textContent = `
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     `;
-    
-    // Add modal to page
-    const modalContainer = document.createElement('div');
-    modalContainer.id = 'paymentModal';
-    modalContainer.classList.add('modal-container');
-    modalContainer.innerHTML = modalHtml;
-    document.body.appendChild(modalContainer);
+    document.head.appendChild(styleElement);
 }
 
-// Close modal
-function closeModal() {
-    const modal = document.getElementById('paymentModal');
-    if (modal) {
-        document.body.removeChild(modal);
-    }
-}
-
-// Initialize airtime filters
+// Initialize filters
 function initializeAirtimeFilters() {
     const dateFilterSelect = document.getElementById('airtimeDateFilter');
     if (dateFilterSelect) {
@@ -577,11 +282,6 @@ function animateCounter(elementId, targetValue) {
             element.textContent = formatNumber(Math.floor(currentValue));
         }
     }, duration / steps);
-}
-
-// Format number with commas
-function formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // Format date

@@ -1,5 +1,6 @@
 // Withdrawals from Agents page specific functions
 function initializeWithdrawals() {
+    console.log('Initializing Withdrawals page...');
     // Initialize filter elements
     initializeWithdrawalsFilters();
     
@@ -42,123 +43,105 @@ async function loadWithdrawalStatistics() {
 }
 
 // Load withdrawal transaction data from API
-async function loadWithdrawalsData(page = 1) {
+async function loadWithdrawalsData() {
     try {
-        const tableContainer = document.querySelector('.transactions-table');
+        const response = await fetch('http://localhost:3000/api/withdrawals');
+        const jsonData = await response.json();
+        const data = jsonData.data;
+
         const tableBody = document.getElementById('withdrawalsTableBody');
-        if (!tableBody || !tableContainer) return;
-        
-        UI.showLoading(tableContainer);
-        
-        // Get filter values
-        const dateFilter = document.getElementById('withdrawalsDateFilter')?.value;
-        const locationFilter = document.getElementById('withdrawalsLocationFilter')?.value;
-        
-        // Calculate date ranges based on filter
-        let startDate, endDate;
-        if (dateFilter) {
-            const now = new Date();
-            endDate = now.toISOString().split('T')[0];
+        tableBody.innerHTML = ''; // Clear previous rows
+
+        data.forEach(item => {
+            const row = document.createElement('tr');
+
+            // Define status based on transaction status
+            const status = item.status || 'Completed';
             
-            if (dateFilter === 'today') {
-                startDate = endDate;
-            } else if (dateFilter === 'yesterday') {
-                const yesterday = new Date(now.setDate(now.getDate() - 1));
-                startDate = yesterday.toISOString().split('T')[0];
-                endDate = startDate;
-            } else if (dateFilter === 'week') {
-                const weekAgo = new Date(now.setDate(now.getDate() - 7));
-                startDate = weekAgo.toISOString().split('T')[0];
-            } else if (dateFilter === 'month') {
-                const monthAgo = new Date(now.setMonth(now.getMonth() - 1));
-                startDate = monthAgo.toISOString().split('T')[0];
-            } else if (dateFilter === 'year') {
-                const yearAgo = new Date(now.setFullYear(now.getFullYear() - 1));
-                startDate = yearAgo.toISOString().split('T')[0];
-            }
-        }
+            // Define status class for styling
+            const statusClass = status === 'Completed' ? 'status-success' : 
+                               (status === 'Pending' ? 'status-pending' : 'status-failed');
+
+            // Format date
+            const date = new Date(item.transactionDate).toLocaleString();
+
+            row.innerHTML = `
+                <td>${item.agent || 'N/A'}</td>
+                <td>${item.location || 'N/A'}</td>
+                <td>${formatNumber(parseFloat(item.amount))} RWF</td>
+                <td>${date}</td>
+                <td><span class="status ${statusClass}">${status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+        });
         
-        // Prepare API parameters
-        const params = {
-            page,
-            limit: 10,
-            startDate,
-            endDate
-        };
+        // Add CSS for status indicators if not already added
+        addStatusStyles();
         
-        if (locationFilter && locationFilter !== 'all') {
-            params.agent = locationFilter;
-        }
-        
-        // Fetch transactions data from API
-        const response = await API.getWithdrawalTransactions(params);
-        
-        if (!response || !response.data) {
-            throw new Error('Failed to load transactions');
-        }
-        
-        const { data: transactions, metadata } = response;
-        
-        // Render transactions table
-        renderWithdrawalsTable(transactions, tableBody);
-        
-        // Render pagination
-        const paginationContainer = document.getElementById('withdrawalsPagination');
-        if (paginationContainer) {
-            UI.renderPagination(metadata, 'withdrawalsPagination', (newPage) => {
-                loadWithdrawalsData(newPage);
-            });
-        }
-        
+        // Update statistics
+        updateWithdrawalsStatistics(data);
+
     } catch (error) {
-        console.error('Error loading withdrawal transactions:', error);
-        const tableContainer = document.querySelector('.transactions-table');
-        if (tableContainer) {
-            UI.showError(tableContainer, 'Failed to load transaction data');
-        }
+        console.error('Error loading withdrawals data:', error);
+        const tableBody = document.getElementById('withdrawalsTableBody');
+        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
     }
 }
 
-// Render withdrawals table
-function renderWithdrawalsTable(transactions, tableBody) {
-    if (!transactions || !tableBody) return;
+// Update withdrawals statistics
+function updateWithdrawalsStatistics(data) {
+    if (!data || !Array.isArray(data) || data.length === 0) return;
     
-    let html = '';
+    // Calculate statistics
+    const totalWithdrawals = data.length;
+    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+    const avgWithdrawal = totalWithdrawals > 0 ? totalAmount / totalWithdrawals : 0;
     
-    if (transactions.length === 0) {
-        html = '<tr><td colspan="6" class="no-data">No transactions found</td></tr>';
-    } else {
-        transactions.forEach(transaction => {
-            // Determine status based on if the transaction was successful
-            const status = transaction.fee >= 0 ? 'success' : 'failed';
-            
-            html += `
-                <tr>
-                    <td>${transaction.agentName || 'Unknown Agent'}</td>
-                    <td>${transaction.agentPhone || 'N/A'}</td>
-                    <td>RWF ${UI.formatMoney(transaction.amount)}</td>
-                    <td>${UI.formatDate(transaction.transactionDate)}</td>
-                    <td><span class="status status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
-                    <td>
-                        <button class="action-btn" data-transaction-id="${transaction.id}">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
+    // Update UI if elements exist
+    const totalWithdrawalsEl = document.getElementById('totalWithdrawals');
+    const withdrawalAmountEl = document.getElementById('withdrawalAmount');
+    const avgWithdrawalEl = document.getElementById('avgWithdrawal');
     
-    tableBody.innerHTML = html;
+    if (totalWithdrawalsEl) totalWithdrawalsEl.textContent = totalWithdrawals;
+    if (withdrawalAmountEl) withdrawalAmountEl.textContent = formatNumber(totalAmount);
+    if (avgWithdrawalEl) avgWithdrawalEl.textContent = formatNumber(Math.round(avgWithdrawal));
+}
+
+// Format number with commas
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Add CSS styles for status indicators
+function addStatusStyles() {
+    // Check if styles are already added
+    if (document.getElementById('withdrawals-status-styles')) return;
     
-    // Add event listeners to action buttons
-    const actionButtons = tableBody.querySelectorAll('.action-btn');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const transactionId = this.getAttribute('data-transaction-id');
-            showTransactionDetails(transactionId);
-        });
-    });
+    const styleElement = document.createElement('style');
+    styleElement.id = 'withdrawals-status-styles';
+    styleElement.textContent = `
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    `;
+    document.head.appendChild(styleElement);
 }
 
 // Load agent data for charts
@@ -341,14 +324,14 @@ function initializeWithdrawalsFilters() {
     const dateFilterSelect = document.getElementById('withdrawalsDateFilter');
     if (dateFilterSelect) {
         dateFilterSelect.addEventListener('change', function() {
-            loadWithdrawalsData(1); // Reload data with page 1
+            loadWithdrawalsData(); // Reload data
         });
     }
     
     const locationFilterSelect = document.getElementById('withdrawalsLocationFilter');
     if (locationFilterSelect) {
         locationFilterSelect.addEventListener('change', function() {
-            loadWithdrawalsData(1); // Reload data with page 1
+            loadWithdrawalsData(); // Reload data
         });
     }
 }
@@ -387,11 +370,6 @@ function animateCounter(elementId, targetValue) {
     }, duration / steps);
 }
 
-// Format number with commas
-function formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 // Format date
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -401,4 +379,7 @@ function formatDate(dateString) {
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-} 
+}
+
+// Initialize when the document is ready
+document.addEventListener('DOMContentLoaded', initializeWithdrawals); 

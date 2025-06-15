@@ -154,43 +154,50 @@ function initializeBundleCharts() {
     });
 }
 
-// Load sample bundle data
-function loadBundleData() {
-    const tableBody = document.getElementById('bundlesTableBody');
-    if (!tableBody) return;
-    
-    const bundles = [
-        { network: 'MTN', phoneNumber: '078*****123', bundleType: 'Data', amount: 1000, date: '2023-06-15', status: 'success' },
-        { network: 'Airtel', phoneNumber: '073*****456', bundleType: 'Voice', amount: 500, date: '2023-06-14', status: 'success' },
-        { network: 'MTN', phoneNumber: '078*****789', bundleType: 'Data + Voice', amount: 2000, date: '2023-06-13', status: 'pending' },
-        { network: 'Tigo', phoneNumber: '072*****012', bundleType: 'Social Media', amount: 300, date: '2023-06-12', status: 'success' },
-        { network: 'MTN', phoneNumber: '078*****345', bundleType: 'Data', amount: 5000, date: '2023-06-11', status: 'failed' },
-        { network: 'Airtel', phoneNumber: '073*****678', bundleType: 'Voice', amount: 1000, date: '2023-06-10', status: 'success' },
-        { network: 'Tigo', phoneNumber: '072*****901', bundleType: 'Data', amount: 2000, date: '2023-06-09', status: 'success' },
-        { network: 'MTN', phoneNumber: '078*****234', bundleType: 'Social Media', amount: 500, date: '2023-06-08', status: 'pending' }
-    ];
-    
-    let html = '';
-    
-    bundles.forEach(bundle => {
-        html += `
-            <tr>
-                <td><span class="network-badge ${bundle.network.toLowerCase()}">${bundle.network}</span></td>
-                <td>${bundle.phoneNumber}</td>
-                <td>${bundle.bundleType}</td>
-                <td>RWF ${formatNumber(bundle.amount)}</td>
-                <td>${formatDate(bundle.date)}</td>
-                <td><span class="status status-${bundle.status}">${capitalizeFirstLetter(bundle.status)}</span></td>
-                <td>
-                    <button class="action-btn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-    
-    tableBody.innerHTML = html;
+// Load bundle data from API
+async function loadBundleData() {
+    try {
+        const response = await fetch('http://localhost:3000/api/bundles');
+        const json = await response.json();
+
+        const tableBody = document.getElementById('bundlesTableBody');
+        tableBody.innerHTML = ''; // Clear previous entries
+
+        json.data.forEach(item => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${item.phoneNumber || 'N/A'}</td>
+                <td>${item.bundleType || 'N/A'}</td>
+                <td>${Number(item.amount).toLocaleString()} RWF</td>
+                <td>${new Date(item.transactionDate).toLocaleString()}</td>
+                <td>Successful</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+        
+        // Update statistics based on real data
+        const totalBundles = json.data.length;
+        const totalAmount = json.data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
+        const avgBundle = totalBundles > 0 ? totalAmount / totalBundles : 0;
+        
+        // Update UI if elements exist
+        const totalBundlesEl = document.getElementById('totalBundles');
+        const bundleAmountEl = document.getElementById('bundleAmount');
+        const avgBundleEl = document.getElementById('avgBundle');
+        
+        if (totalBundlesEl) totalBundlesEl.textContent = totalBundles;
+        if (bundleAmountEl && bundleAmountEl.tagName !== 'INPUT') bundleAmountEl.textContent = Number(totalAmount).toLocaleString();
+        if (avgBundleEl) avgBundleEl.textContent = Number(Math.round(avgBundle)).toLocaleString();
+        
+    } catch (error) {
+        console.error('Error fetching bundles:', error);
+        const tableBody = document.getElementById('bundlesTableBody');
+        if (tableBody) {
+            tableBody.innerHTML = '<tr><td colspan="7">Failed to load data. Please try again later.</td></tr>';
+        }
+    }
 }
 
 // Initialize bundle filters
@@ -391,4 +398,9 @@ function formatDate(dateString) {
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-} 
+}
+
+// Initialize when the document is ready
+window.addEventListener('DOMContentLoaded', function() {
+    initializeInternetBundles();
+}); 
