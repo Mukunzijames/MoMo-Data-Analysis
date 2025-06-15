@@ -1,0 +1,214 @@
+<div class="page-header">
+    <h1>Internet & Voice Bundle Purchases</h1>
+    <div class="filter-controls">
+        <div class="filter-item">
+            <label for="bundlesDateFilter">Date Range:</label>
+            <select id="bundlesDateFilter" class="form-control">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days" selected>Last 30 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="networkFilter">Network:</label>
+            <select id="networkFilter" class="form-control">
+                <option value="all" selected>All Networks</option>
+                <option value="mtn">MTN</option>
+                <option value="airtel">Airtel</option>
+                <option value="tigo">Tigo</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download"></i> Export
+        </button>
+    </div>
+</div>
+
+<div class="stats-cards">
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Purchases</h3>
+        </div>
+        <div class="card-body">
+            <h2 class="counter" id="totalBundles">0</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Total Amount</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="bundleAmount">0</span></h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Average Purchase</h3>
+        </div>
+        <div class="card-body">
+            <h2><span>RWF</span> <span class="counter" id="avgBundle">0</span></h2>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="main-content-area">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Monthly Bundle Purchases</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="bundlesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Bundle Types</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="bundleTypeChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Network Distribution</h3>
+                </div>
+                <div class="chart-body">
+                    <canvas id="networkDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactions-section">
+            <div class="section-header">
+                <h2>Recent Bundle Purchases</h2>
+                <button class="btn btn-outline">View All</button>
+            </div>
+            <div class="transactions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Network</th>
+                            <th>Phone Number</th>
+                            <th>Bundle Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bundlesTableBody">
+                        <!-- Bundle purchases data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-content-area">
+        <div class="card">
+            <div class="card-header">
+                <h3>Buy Bundle</h3>
+            </div>
+            <div class="card-body">
+                <form id="buyBundleForm">
+                    <div class="form-group">
+                        <label for="networkSelect">Network</label>
+                        <select id="networkSelect" class="form-control">
+                            <option value="" disabled selected>Select a network</option>
+                            <option value="mtn">MTN</option>
+                            <option value="airtel">Airtel</option>
+                            <option value="tigo">Tigo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" class="form-control" placeholder="Enter phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bundleTypeSelect">Bundle Type</label>
+                        <select id="bundleTypeSelect" class="form-control">
+                            <option value="" disabled selected>Select bundle type</option>
+                            <option value="data">Data Bundle</option>
+                            <option value="voice">Voice Bundle</option>
+                            <option value="data-voice">Data + Voice Bundle</option>
+                            <option value="social">Social Media Bundle</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Bundle Options</label>
+                        <div id="bundleOptions">
+                            <p>Please select both network and bundle type</p>
+                        </div>
+                    </div>
+                    
+                    <div id="selectedBundleSection" style="display: none;">
+                        <div class="selected-bundle">
+                            <div class="selected-bundle-header">
+                                <h4>Selected Bundle</h4>
+                            </div>
+                            <div class="selected-bundle-body">
+                                <div class="selected-bundle-info">
+                                    <div class="bundle-name" id="selectedBundleName">Bundle Name</div>
+                                    <div class="bundle-price" id="selectedBundlePrice">RWF 0</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bundleAmount">Amount (RWF)</label>
+                            <input type="number" id="bundleAmount" class="form-control" readonly>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Purchase Bundle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Saved Numbers</h3>
+            </div>
+            <div class="card-body">
+                <div class="saved-numbers">
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">078*****123</div>
+                            <div class="label">Personal</div>
+                        </div>
+                        <span class="network-badge mtn">MTN</span>
+                        <button class="btn btn-outline btn-sm">Buy Bundle</button>
+                    </div>
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">073*****456</div>
+                            <div class="label">Work</div>
+                        </div>
+                        <span class="network-badge airtel">Airtel</span>
+                        <button class="btn btn-outline btn-sm">Buy Bundle</button>
+                    </div>
+                    <div class="saved-number">
+                        <div class="number-info">
+                            <div class="number">072*****789</div>
+                            <div class="label">Family</div>
+                        </div>
+                        <span class="network-badge tigo">Tigo</span>
+                        <button class="btn btn-outline btn-sm">Buy Bundle</button>
+                    </div>
+                    <button class="btn btn-outline btn-block">Add New Number</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="frontend/js/internetBundles.js"></script> 

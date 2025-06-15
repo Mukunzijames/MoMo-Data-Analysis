@@ -48,6 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Initialize dashboard
+    initializeDashboard();
+});
+
+// Dashboard specific functions
+function initializeDashboard() {
     // Initialize counters
     animateCounter('totalTransactions', 1248);
     animateCounter('totalAmount', 7542350);
@@ -59,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load sample transaction data
     loadSampleTransactions();
-});
+}
 
 // Counter animation function
 function animateCounter(elementId, targetValue) {
