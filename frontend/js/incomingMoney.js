@@ -2,41 +2,25 @@
 function initializeIncomingMoney() {
     console.log('Initializing Incoming Money page...');
     loadIncomingData();
+    setupSearchAndFilters();
 }
+
+// Store the original data to make filtering easier
+let originalTransactionData = [];
 
 async function loadIncomingData() {
     try {
         const response = await fetch('http://localhost:3000/api/incoming-money');
         const json = await response.json();
+        
+        // Store the original data
+        originalTransactionData = json.data;
 
-        const tableBody = document.getElementById('incomingTableBody');
-        tableBody.innerHTML = ''; // clear existing rows
-
-        json.data.forEach(item => {
-            const row = document.createElement('tr');
-
-            // Define status based on transaction type
-            const status = item.status || 'Success';
-            
-            // Define status class for styling
-            const statusClass = status === 'Success' ? 'status-success' : 'status-failed';
-
-            row.innerHTML = `
-                <td>${item.sender || 'N/A'}</td>
-                <td>${Number(item.amount).toLocaleString()} RWF</td>
-                <td>${new Date(item.transactionDate).toLocaleString()}</td>
-                <td>${item.source || 'Mobile Money'}</td>
-                <td><span class="status ${statusClass}">${status}</span></td>
-            `;
-
-            tableBody.appendChild(row);
-        });
+        // Update the table with the data
+        updateTransactionTable(originalTransactionData);
         
         // Add CSS for status indicators if not already added
         addStatusStyles();
-        
-        // Update statistics
-        updateIncomingStatistics(json.data);
 
     } catch (error) {
         console.error('Failed to load incoming money data:', error);
@@ -45,23 +29,168 @@ async function loadIncomingData() {
     }
 }
 
-// Update incoming money statistics
-function updateIncomingStatistics(data) {
-    if (!data || !Array.isArray(data) || data.length === 0) return;
+// Function to update the transaction table with filtered data
+function updateTransactionTable(data) {
+    const tableBody = document.getElementById('incomingTableBody');
+    tableBody.innerHTML = ''; // clear existing rows
     
-    // Calculate statistics
-    const totalTransactions = data.length;
-    const totalAmount = data.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
-    const avgTransaction = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5">No matching transactions found.</td></tr>';
+        return;
+    }
+
+    data.forEach(item => {
+        const row = document.createElement('tr');
+
+        // Define status based on transaction type
+        const status = item.status || 'Success';
+        
+        // Define status class for styling
+        const statusClass = status === 'Success' ? 'status-success' : 'status-failed';
+
+        row.innerHTML = `
+            <td>${item.sender || 'N/A'}</td>
+            <td>${Number(item.amount).toLocaleString()} RWF</td>
+            <td>${new Date(item.transactionDate).toLocaleString()}</td>
+            <td>${item.source || 'Mobile Money'}</td>
+            <td><span class="status ${statusClass}">${status}</span></td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Set up search and filter functionality
+function setupSearchAndFilters() {
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const dateFilter = document.getElementById('dateFilter');
+    const sourceFilter = document.getElementById('sourceFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const applyFilters = document.getElementById('applyFilters');
     
-    // Update UI if elements exist
-    const totalIncomingEl = document.getElementById('totalIncoming');
-    const incomingAmountEl = document.getElementById('incomingAmount');
-    const avgIncomingEl = document.getElementById('avgIncoming');
+    // Search functionality
+    if (searchInput && searchBtn) {
+        searchInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        searchBtn.addEventListener('click', performSearch);
+    }
     
-    if (totalIncomingEl) totalIncomingEl.textContent = totalTransactions;
-    if (incomingAmountEl) incomingAmountEl.textContent = Number(totalAmount).toLocaleString();
-    if (avgIncomingEl) avgIncomingEl.textContent = Number(Math.round(avgTransaction)).toLocaleString();
+    // Filter functionality
+    if (applyFilters) {
+        applyFilters.addEventListener('click', applyAllFilters);
+    }
+}
+
+// Perform search on transactions
+function performSearch() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+    if (!searchTerm) {
+        updateTransactionTable(originalTransactionData);
+        return;
+    }
+    
+    const filteredData = originalTransactionData.filter(item => {
+        // Search in multiple fields
+        return (
+            (item.sender && item.sender.toLowerCase().includes(searchTerm)) ||
+            (item.amount && item.amount.toString().includes(searchTerm)) ||
+            (item.source && item.source.toLowerCase().includes(searchTerm))
+        );
+    });
+    
+    updateTransactionTable(filteredData);
+}
+
+// Apply all selected filters
+function applyAllFilters() {
+    const dateFilter = document.getElementById('dateFilter').value;
+    const sourceFilter = document.getElementById('sourceFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    let filteredData = [...originalTransactionData];
+    
+    // Apply date filter
+    filteredData = filterByDate(filteredData, dateFilter);
+    
+    // Apply source filter
+    if (sourceFilter !== 'all') {
+        filteredData = filteredData.filter(item => {
+            const source = item.source ? item.source.toLowerCase() : 'mobile money';
+            
+            switch(sourceFilter) {
+                case 'mobileMoney':
+                    return source.includes('mobile money');
+                case 'bankTransfer':
+                    return source.includes('bank');
+                case 'international':
+                    return source.includes('international') || source.includes('remittance');
+                default:
+                    return true;
+            }
+        });
+    }
+    
+    // Apply status filter
+    if (statusFilter !== 'all') {
+        filteredData = filteredData.filter(item => {
+            const status = item.status ? item.status.toLowerCase() : 'success';
+            return status === statusFilter.toLowerCase();
+        });
+    }
+    
+    updateTransactionTable(filteredData);
+}
+
+// Filter transactions by date range
+function filterByDate(data, dateFilter) {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let startDate;
+    
+    switch(dateFilter) {
+        case 'today':
+            startDate = today;
+            break;
+        case 'yesterday':
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 1);
+            break;
+        case 'last7days':
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 7);
+            break;
+        case 'last30days':
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 30);
+            break;
+        case 'thisMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            break;
+        case 'lastMonth':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            const endLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            return data.filter(item => {
+                const date = new Date(item.transactionDate);
+                return date >= startDate && date <= endLastMonth;
+            });
+        case 'custom':
+            // For custom date range, we'd typically have a date picker UI
+            // For now, we'll just return all data
+            return data;
+        default:
+            return data;
+    }
+    
+    return data.filter(item => {
+        const date = new Date(item.transactionDate);
+        return date >= startDate;
+    });
 }
 
 // Format number with commas

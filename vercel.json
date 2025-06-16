@@ -1,9 +1,27 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "edge"
+      }
+    },
+    {
+      "src": "pages/api/**/*.ts",
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "nodejs18.x"
+      }
+    },
+    {
+      "src": "app/**/*.ts",
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "edge"
+      }
     },
     {
       "src": "*.html",
@@ -16,6 +34,10 @@
   ],
   "routes": [
     {
+      "src": "/pages/api/(.*)",
+      "dest": "/pages/api/$1"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "src/index.ts"
     },
@@ -23,5 +45,9 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ]
+  ],
+  "env": {
+    "NODEJS_HELPERS": "0"
+  },
+  "public": true
 } 

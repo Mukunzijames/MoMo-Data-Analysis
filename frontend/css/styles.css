@@ -453,7 +453,11 @@ body {
 
 /* Transactions Section */
 .transactions-section {
-    margin-top: 30px;
+    margin-top: 20px;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
 }
 
 .section-header {
@@ -916,4 +920,74 @@ textarea.form-control {
 .btn-sm {
     padding: 5px 10px;
     font-size: 0.8rem;
+}
+
+.search-filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 20px;
+    border-radius: 30px;
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 107, 134, 0.2);
+}
+
+.search-box .search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--gray-text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s;
+}
+
+.search-box .search-btn:hover {
+    color: var(--primary-color);
+}
+
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+/* Responsive adjustments for the search and filter section */
+@media (max-width: 768px) {
+    .search-filter-container {
+        flex-direction: column;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-item {
+        width: 100%;
+    }
 } 
