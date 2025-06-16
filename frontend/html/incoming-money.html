@@ -1,95 +1,53 @@
 <div class="page-header">
     <h1>Incoming Money</h1>
-    <div class="filter-controls">
-        <div class="filter-item">
-            <label for="dateFilter">Date Range:</label>
-            <select id="dateFilter" class="form-control">
-                <option value="today">Today</option>
-                <option value="yesterday">Yesterday</option>
-                <option value="last7days">Last 7 Days</option>
-                <option value="last30days" selected>Last 30 Days</option>
-                <option value="thisMonth">This Month</option>
-                <option value="lastMonth">Last Month</option>
-                <option value="custom">Custom Range</option>
-            </select>
+    <div class="search-filter-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by sender, amount or source...">
+            <button class="search-btn" id="searchBtn">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
-        <button class="btn btn-primary">
-            <i class="fas fa-download"></i> Export
-        </button>
-    </div>
-</div>
-
-<div class="stats-cards">
-    <div class="card">
-        <div class="card-header">
-            <h3>Total Transactions</h3>
-        </div>
-        <div class="card-body">
-            <h2 class="counter" id="totalIncoming">0</h2>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3>Total Amount</h3>
-        </div>
-        <div class="card-body">
-            <h2><span>RWF</span> <span class="counter" id="incomingAmount">0</span></h2>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3>Average Transaction</h3>
-        </div>
-        <div class="card-body">
-            <h2><span>RWF</span> <span class="counter" id="avgIncoming">0</span></h2>
-        </div>
-    </div>
-</div>
-
-<div class="chart-container">
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>Incoming Money Trends</h3>
-        </div>
-        <div class="chart-body">
-            <canvas id="incomingChart"></canvas>
+        <div class="filter-controls">
+            <div class="filter-item">
+                <label for="dateFilter">Date Range:</label>
+                <select id="dateFilter" class="form-control">
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="last30days" selected>Last 30 Days</option>
+                    <option value="thisMonth">This Month</option>
+                    <option value="lastMonth">Last Month</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="sourceFilter">Source:</label>
+                <select id="sourceFilter" class="form-control">
+                    <option value="all" selected>All Sources</option>
+                    <option value="mobileMoney">Mobile Money</option>
+                    <option value="bankTransfer">Bank Transfer</option>
+                    <option value="international">International Remittance</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter" class="form-control">
+                    <option value="all" selected>All Statuses</option>
+                    <option value="success">Success</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="applyFilters">
+                Apply Filters
+            </button>
         </div>
     </div>
 </div>
 
-<div class="chart-grid">
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>Transaction Sources</h3>
-        </div>
-        <div class="chart-body">
-            <canvas id="sourceChart"></canvas>
-        </div>
-    </div>
-    <div class="stats-card">
-        <div class="card-header">
-            <h3>Quick Stats</h3>
-        </div>
-        <div class="stats-list">
-            <div class="stat-item">
-                <div class="stat-label">Highest Transaction</div>
-                <div class="stat-value">RWF 500,000</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Most Common Source</div>
-                <div class="stat-value">Bank Transfers</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Peak Day</div>
-                <div class="stat-value">Monday</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Peak Time</div>
-                <div class="stat-value">10:00 AM - 12:00 PM</div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
 
 <div class="transactions-section">
     <div class="section-header">

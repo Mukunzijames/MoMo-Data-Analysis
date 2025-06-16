@@ -8,10 +8,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "process-sms": "node sms-processor.js",
-    "import-sms": "tsx src/scripts/import-momo-transactions.ts",      
+    "import-sms": "tsx src/scripts/import-momo-transactions.ts",
     "db:generate": "drizzle-kit generate:pg",
     "db:push": "drizzle-kit",
-    "test-connection": "ts-node src/scripts/testConnection.ts"
+    "test-connection": "ts-node src/scripts/testConnection.ts",
+    "deploy": "npx vercel deploy --prod"
   },
   "repository": {
     "type": "git",
@@ -33,12 +34,17 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@types/next": "^9.0.0",
     "@types/node": "^24.0.0",
     "@types/xml2js": "^0.4.14",
     "drizzle-kit": "^0.31.1",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vercel": "^43.1.0"
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }

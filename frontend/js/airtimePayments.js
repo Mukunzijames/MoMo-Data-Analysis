@@ -2,6 +2,9 @@
 function initializeAirtimePayments() {
     console.log('Initializing Airtime Bill Payments page...');
     loadAirtimeData();
+    initializeAirtimeCharts();
+    initializeAirtimeFilters();
+    initializeQuickPurchaseForm();
 }
 
 async function loadAirtimeData() {
@@ -298,16 +301,16 @@ function formatDate(dateString) {
 async function initializeAirtimeCharts() {
     try {
         // Fetch monthly trends data
-        const trendsResponse = await axios.get('http://127.0.0.1:5500/api/airtime-bill-payments/trends');
-        const trendsData = trendsResponse.data || [];
+        const trendsResponse = await fetch('http://localhost:3000/api/airtime-bill-payments/trends');
+        const trendsData = await trendsResponse.json();
         
         // Fetch top providers data
-        const providersResponse = await axios.get('http://127.0.0.1:5500/api/airtime-bill-payments/top-providers');
-        const providersData = providersResponse.data || [];
+        const providersResponse = await fetch('http://localhost:3000/api/airtime-bill-payments/top-providers');
+        const providersData = await providersResponse.json();
         
         // Fetch bill types data
-        const billTypesResponse = await axios.get('http://127.0.0.1:5500/api/airtime-bill-payments/bill-types');
-        const billTypesData = billTypesResponse.data || [];
+        const billTypesResponse = await fetch('http://localhost:3000/api/airtime-bill-payments/bill-types');
+        const billTypesData = await billTypesResponse.json();
         
         // Initialize transactions chart
         initializeTransactionsChart(trendsData);
@@ -324,4 +327,247 @@ async function initializeAirtimeCharts() {
         initializeNetworkDistributionChart([]);
         initializeAmountDistributionChart([]);
     }
+}
+
+// Initialize Monthly Airtime Purchases chart (line chart)
+function initializeTransactionsChart(data) {
+    const ctx = document.getElementById('airtimeChart');
+    if (!ctx) return;
+    
+    // Prepare data for chart
+    const labels = [];
+    const amounts = [];
+    const counts = [];
+    
+    // Process data from API or use empty arrays if no data
+    if (data && data.length > 0) {
+        // Sort data by date to ensure chronological order
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        data.forEach(item => {
+            labels.push(formatMonthYear(item.date));
+            amounts.push(item.totalAmount || 0);
+            counts.push(item.transactionCount || 0);
+        });
+    }
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Total Amount (RWF)',
+                    data: amounts,
+                    backgroundColor: 'rgba(255, 210, 0, 0.1)',
+                    borderColor: 'rgba(255, 210, 0, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    yAxisID: 'y',
+                    fill: true
+                },
+                {
+                    label: 'Number of Purchases',
+                    data: counts,
+                    backgroundColor: 'rgba(0, 107, 134, 0.1)',
+                    borderColor: 'rgba(0, 107, 134, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    yAxisID: 'y1',
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Total Amount (RWF)'
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Number of Purchases'
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Monthly Airtime Purchase Trends'
+                }
+            }
+        }
+    });
+}
+
+// Initialize Network Distribution chart (pie chart)
+function initializeNetworkDistributionChart(data) {
+    const ctx = document.getElementById('networkDistributionChart');
+    if (!ctx) return;
+    
+    // Prepare data for chart
+    const labels = [];
+    const values = [];
+    const backgroundColors = [
+        'rgba(255, 210, 0, 0.7)',   // MTN yellow
+        'rgba(220, 53, 69, 0.7)',    // Airtel red
+        'rgba(0, 123, 255, 0.7)',    // Tigo blue
+        'rgba(108, 117, 125, 0.7)'   // Others gray
+    ];
+    const borderColors = [
+        'rgba(255, 210, 0, 1)',
+        'rgba(220, 53, 69, 1)',
+        'rgba(0, 123, 255, 1)',
+        'rgba(108, 117, 125, 1)'
+    ];
+    
+    // Process data from API or use placeholder data if empty
+    if (data && data.length > 0) {
+        data.forEach((item, index) => {
+            labels.push(item.provider || 'Unknown');
+            values.push(item.count || 0);
+        });
+    } else {
+        // Placeholder data to show chart structure
+        labels.push('MTN', 'Airtel', 'Tigo', 'Other');
+        values.push(0, 0, 0, 0);
+    }
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: backgroundColors.slice(0, labels.length),
+                borderColor: borderColors.slice(0, labels.length),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                title: {
+                    display: true,
+                    text: 'Airtime Purchases by Network'
+                }
+            }
+        }
+    });
+}
+
+// Initialize Amount Distribution chart (bar chart)
+function initializeAmountDistributionChart(data) {
+    const ctx = document.getElementById('amountDistributionChart');
+    if (!ctx) return;
+    
+    // Prepare data for chart
+    const labels = [];
+    const values = [];
+    
+    // Process data from API or use placeholder data if empty
+    if (data && data.length > 0) {
+        // Sort data by amount ranges
+        data.sort((a, b) => {
+            // Extract numeric value from range if possible
+            const getVal = str => parseInt(str.match(/\d+/)[0] || 0);
+            return getVal(a.amountRange) - getVal(b.amountRange);
+        });
+        
+        data.forEach(item => {
+            labels.push(item.amountRange || 'Unknown');
+            values.push(item.count || 0);
+        });
+    } else {
+        // Placeholder data to show chart structure
+        labels.push('100-500', '501-1000', '1001-2000', '2001-5000', '5001+');
+        values.push(0, 0, 0, 0, 0);
+    }
+    
+    // Create the chart
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Transactions',
+                data: values,
+                backgroundColor: 'rgba(0, 107, 134, 0.7)',
+                borderColor: 'rgba(0, 107, 134, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Count'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Amount Range (RWF)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Airtime Purchase Amount Distribution'
+                }
+            }
+        }
+    });
+}
+
+// Helper function to format date as Month Year (e.g., "Jan 2023")
+function formatMonthYear(dateString) {
+    if (!dateString) return 'Unknown';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString;
+    
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 } 

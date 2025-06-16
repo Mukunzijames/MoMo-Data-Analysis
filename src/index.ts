@@ -1,9 +1,10 @@
 import 'dotenv/config'
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import { serveStatic } from '@hono/node-server/serve-static'
+import { handle } from '@hono/node-server/vercel'
 import { cors } from 'hono/cors'
 import apiRoutes from './routes/api'
+import { serveStatic } from '@hono/node-server/serve-static'
 
 // Create Hono app
 const app = new Hono()
@@ -31,11 +32,17 @@ app.get('/health', (c) => {
 // Serve static files (frontend)
 app.use('/*', serveStatic({ root: './' }))
 
-// MOMO Data analysis server Port 
-const port = process.env.PORT || 3000
-console.log(`Server is running on port ${port}`)
+// For local development with Node.js
+if (process.env.NODE_ENV !== 'production') {
+  // MOMO Data analysis server Port 
+  const port = process.env.PORT || 3000
+  console.log(`Server is running on port ${port}`)
 
-serve({
-  fetch: app.fetch,
-  port: Number(port)
-}) 
+  serve({
+    fetch: app.fetch,
+    port: Number(port)
+  })
+}
+
+// Export for Vercel Edge Functions
+export default app 

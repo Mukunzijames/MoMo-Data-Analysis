@@ -1,30 +1,47 @@
 <div class="page-header">
     <h1>Payments to Code Holders</h1>
-    <div class="filter-controls">
-        <div class="filter-item">
-            <label for="paymentsDateFilter">Date Range:</label>
-            <select id="paymentsDateFilter" class="form-control">
-                <option value="today">Today</option>
-                <option value="yesterday">Yesterday</option>
-                <option value="last7days">Last 7 Days</option>
-                <option value="last30days" selected>Last 30 Days</option>
-                <option value="thisMonth">This Month</option>
-                <option value="lastMonth">Last Month</option>
-                <option value="custom">Custom Range</option>
-            </select>
+    <div class="filter-row">
+        <div class="filter-group">
+            <div class="filter-item">
+                <label>Date Range:</label>
+                <select id="paymentsDateFilter" class="form-select">
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="last30days">Last 30 Days</option>
+                    <option value="thisMonth">This Month</option>
+                    <option value="lastMonth" selected>Last Month</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+            
+            <div class="filter-item" id="customDateContainer" style="display: none;">
+                <label for="startDate">From:</label>
+                <input type="date" id="startDate" class="form-control">
+                <label for="endDate">To:</label>
+                <input type="date" id="endDate" class="form-control">
+            </div>
+            
+            <div class="filter-item">
+                <label>Status:</label>
+                <select id="paymentsStatusFilter" class="form-select">
+                    <option value="all">All Statuses</option>
+                    <option value="profit" selected>Profit</option>
+                    <option value="loss">Loss</option>
+                    <option value="neutral">Neutral</option>
+                </select>
+            </div>
+            
+            <button id="applyFilters" class="btn btn-primary apply-filters">
+                Apply 
+            </button>
         </div>
-        <div class="filter-item">
-            <label for="paymentsStatusFilter">Status:</label>
-            <select id="paymentsStatusFilter" class="form-control">
-                <option value="all" selected>All Statuses</option>
-                <option value="success">Success</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
-            </select>
+        
+        <div class="export-btn">
+            <button id="exportData" class="btn">
+                <i class="fas fa-download"></i> Export
+            </button>
         </div>
-        <button class="btn btn-primary">
-            <i class="fas fa-download"></i> Export
-        </button>
     </div>
 </div>
 
@@ -55,62 +72,10 @@
     </div>
 </div>
 
-<div class="chart-grid">
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>Monthly Transactions</h3>
-        </div>
-        <div class="chart-body">
-            <canvas id="paymentsCodeChart"></canvas>
-        </div>
-    </div>
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>Monthly Payment Amounts</h3>
-        </div>
-        <div class="chart-body">
-            <canvas id="paymentAmountsChart"></canvas>
-        </div>
-    </div>
-</div>
-
-<div class="feature-cards">
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-qrcode"></i>
-        </div>
-        <div class="feature-content">
-            <h3>Generate Payment Code</h3>
-            <p>Create a new payment code for a recipient</p>
-            <button class="btn btn-outline">Generate Code</button>
-        </div>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-search"></i>
-        </div>
-        <div class="feature-content">
-            <h3>Verify Payment Code</h3>
-            <p>Check if a payment code is valid and its status</p>
-            <button class="btn btn-outline">Verify Code</button>
-        </div>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-file-export"></i>
-        </div>
-        <div class="feature-content">
-            <h3>Batch Processing</h3>
-            <p>Upload a file to process multiple payments at once</p>
-            <button class="btn btn-outline">Upload File</button>
-        </div>
-    </div>
-</div>
-
 <div class="transactions-section">
     <div class="section-header">
         <h2>Recent Payments</h2>
-        <button class="btn btn-outline">View All</button>
+        <button class="btn btn-outline" id="viewAllPayments">View All</button>
     </div>
     <div class="transactions-table">
         <table>
@@ -125,11 +90,12 @@
             </thead>
             <tbody id="paymentsCodeTableBody">
                 <tr>
-                    <td colspan="6">Loading data...</td>
+                    <td colspan="6" class="loading-data">Loading data...</td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <div id="paymentsPagination" class="pagination-container"></div>
 </div>
 
 <script src="../js/paymentsCode.js"></script> 
