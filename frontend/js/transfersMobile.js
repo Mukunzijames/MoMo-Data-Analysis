@@ -108,7 +108,49 @@ function initializeTransfersChart() {
     });
 }
 
-// Function removed
+// Load mobile transfers data
+async function loadMobileTransfersData() {
+    const tableBody = document.getElementById('transfersTableBody');
+    if (!tableBody) return;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/mobile-transfers');
+        const json = await response.json();
+
+        if (!json.data || !Array.isArray(json.data)) {
+            throw new Error('Invalid data format received');
+        }
+
+        const transfers = json.data;
+        
+        // Clear existing content
+        tableBody.innerHTML = '';
+
+        if (transfers.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5">No transfers found</td></tr>';
+            return;
+        }
+
+        transfers.forEach(transfer => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${transfer.recipient || 'N/A'}</td>
+                <td>${transfer.recipientPhone || 'N/A'}</td>
+                <td>${transfer.amount || '0'}</td>
+                <td>${new Date(transfer.transactionDate).toLocaleString()}</td>
+                <td>${transfer.status || 'Success'}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Update statistics if data is available
+        updateMobileTransfersStatistics(transfers);
+
+    } catch (error) {
+        console.error('Failed to load transfers:', error);
+        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
+    }
+}
 
 // Initialize transfers filters
 function initializeTransfersFilters() {
@@ -193,53 +235,6 @@ function formatDate(dateString) {
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-// Mobile Transfers page specific functions
-function initializeMobileTransfers() {
-    console.log('Initializing Mobile Transfers page...');
-    loadMobileTransfersData();
-}
-
-async function loadMobileTransfersData() {
-    try {
-        const response = await fetch('http://localhost:3000/api/mobile-transfers');
-        const json = await response.json();
-
-        const tableBody = document.getElementById('transfersTableBody');
-        tableBody.innerHTML = ''; // clear existing rows
-
-        json.data.forEach(item => {
-            const row = document.createElement('tr');
-            
-            // Define status based on transaction status
-            const status = item.status || 'Completed';
-            
-            // Define status class for styling
-            const statusClass = status === 'Completed' ? 'status-success' : 'status-pending';
-
-            row.innerHTML = `
-                <td>${item.recipient || 'N/A'}</td>
-                <td>${item.network || 'MTN'}</td>
-                <td>${Number(item.amount).toLocaleString()} RWF</td>
-                <td>${new Date(item.transactionDate).toLocaleString()}</td>
-                <td><span class="status ${statusClass}">${status}</span></td>
-            `;
-
-            tableBody.appendChild(row);
-        });
-        
-        // Add CSS for status indicators if not already added
-        addStatusStyles();
-        
-        // Update statistics
-        updateMobileTransfersStatistics(json.data);
-
-    } catch (error) {
-        console.error('Failed to load transfers:', error);
-        const tableBody = document.getElementById('transfersTableBody');
-        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Please try again later.</td></tr>';
-    }
 }
 
 // Update mobile transfers statistics
