@@ -4,7 +4,7 @@ import { parseStringPromise } from 'xml2js';
 import db from '../db';
 import { rawSms, transactions, contacts } from '../db/schema';
 import { eq } from 'drizzle-orm';
-
+// sms interface
 interface SMS {
   $: {
     protocol?: string;
@@ -25,7 +25,7 @@ interface SMS {
     contact_name?: string;
   };
 }
-
+// sms collection interface
 interface SMSCollection {
   smses: {
     $: {
