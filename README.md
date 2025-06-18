@@ -48,6 +48,12 @@ npm install
 npm run dev
 ```
 
+4. Start your frontend:
+   ```
+   go in index.html and go live
+   ```
+
+   
 ## Available Scripts
 
 - `npm run dev`: Start the development server with hot-reloading
